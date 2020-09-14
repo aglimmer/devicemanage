@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<!-- 设备信息 -->
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<!-- <link rel="stylesheet" href="css/basic.css" type="text/css"/> -->
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="css/equinfo.css" />
+		<link rel="stylesheet" type="text/css" href="css/pagetool.css" />
+		<script src="js/jquery-3.5.0.min.js"></script>
+		<!-- <script src="js/pagetool.js"></script> -->
+		<script src="js/base.js"></script>
+		<script src="js/equinfo.js"></script>
+	</head>
+
+	<body>
+		<!-- 搜索头start  -->
+		<div id="searchdiv">
+			<div class="searchinfo">
+				<input name="choice" type="radio" value="equ_type" checked>类型名</input>
+				<input name="choice" type="radio" value="equ_name">名称</input>
+				<input name="choice" type="radio" value="equ_id">编号</input>
+				<input class="search-text" type="text" name="message" style="margin-top: 5px;" placeholder="请输入设备信息" />
+				<input class="search-btn" type="button" value="搜索" onclick="searchInfo()" />
+			</div>
+		</div>
+
+		<!-- 设备信息表格start -->
+		<div id="contentdiv">
+			<!-- 弹出窗口 -->
+			<div id="popdiv">
+				<div class="popcontainer">
+					<div class="popview">
+						<input type="button" class="btnclose" onclick="btnClose()" value="X">
+						<div class="content">
+							<table>
+								<tr>
+									<td>编号：</td>
+									<td><input type="text" name="equ"> </td>
+									<td>名称：</td>
+									<td><input type="text" name="equ"> </td>
+								</tr>
+								<tr>
+									<td>类型：</td>
+									<td><input type="text" name="equ"> </td>
+									<td>购买日期：</td>
+									<td><input type="date" name="equ"> </td>
+								</tr>
+								<tr>
+									<td>购买人：</td>
+									<td><input type="text" name="equ"></td>
+									<td>单价：</td>
+									<td><input type="number" name="equ"></td>
+								</tr>
+								<tr>
+									<td>总数量：</td>
+									<td><input type="number" name="equ"> </td> 、
+									<td>当前数量：</td>
+									<td><input type="number" name="equ"> </td>
+								</tr>
+								<tr>
+									<td>存放位置：</td>
+									<td><input type="text" name="equ"> </td>
+									<td>单位：</td>
+									<td><input type="text" name="equ"> </td>
+								</tr>
+								<tr>
+									<td colspan="4">设备详情：</td>
+								</tr>
+								<tr>
+									<td colspan="4"><textarea style="width:100%;height:3em" id="equ_spec"></textarea></td>
+								</tr>
+								<tr>
+									<td colspan="2" align="center"><input type="button" class="btnbase" align="center" value="保存" onclick="saveEquipment()"></td>
+									<td colspan="2" align="center"><input type="button" class="btnbase" align="center" value="取消" onclick="btnClose()"></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="showinfo">
+				<div id="contab"></div>
+				<div id="navbar"></div>
+			</div>
+		</div>
+		<!-- 借用设备弹出区 -->
+		<div id="borrowpop">
+			<input type="button" class="closebtn" onclick="borrowClose()" value="X">
+			<div class="borrowcon">
+				<table class="borrowtab">
+					<tr colspan="4">借用详情</tr>
+					<tr colspan="4">
+						<hr>
+					</tr>
+					<tr>
+						<td>用户名：</td>
+						<td><input type="text" id="user_id" disabled></td>
+						<td>设备ID：</td>
+						<td><input type="text" id="equ_id" disabled></td>
+					</tr>
+					<tr>
+						<td>设备名：</td>
+						<td><input type="text" id="equ_name" disabled></td>
+						<td>类型：</td>
+						<td><input type="text" id="equ_type" disabled></td>
+					</tr>
+					<tr>
+						<td>单位：</td>
+						<td><input type="text" id="equ_unit" disabled></td>
+						<td>可借数量：</td>
+						<td><input type="text" id="equ_curr" disabled></td>
+					</tr>
+					<tr>
+						<td>存放位置：</td>
+						<td><input type="text" id="equ_position" disabled></td>
+					</tr>
+
+					<tr>
+						<td colspan="4">设备详情：</td>
+					</tr>
+					<tr>
+						<td colspan="4"><textarea style="width:100%;height:3em" id="equ_spec1" disabled></textarea></td>
+					</tr>
+					<tr>
+						<td>
+							借用时间：
+						</td>
+						<td>
+							<input type="date" id="usi_date">
+						</td>
+						<td>借用天数：</td>
+						<td>
+							<input type="number" id="usi_day" value="1" min="1" max="14" step="1">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">借用数量：<input type="number" id="usi_size" min="1" max="100" step="1" value="1"></td>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">申请说明：</td>
+					</tr>
+					<tr>
+						<td colspan="4"><textarea style="width:100%;height:3em" id="usi_reason"></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><input type="button" class="btnbase" value="提交" onclick="borrowSend()"></td>
+						<td colspan="2" align="center"><input type="button" class="btnbase" value="取消" onclick="borrowClose()"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<!-- 厂家信息 -->
+		<div id="factid">
+			<input type="button" style="float:right;width:18px;text-align: center;height:18px" class="btnbase" onclick="factInfo(0)" value="x">
+			<table>
+				<tr>
+					<td>厂家编号：</td>
+					<td><input type="text" value="" name="facinfo"></td>
+				</tr>
+				<tr>
+					<td>厂家名称：</td>
+					<td><input type="text" value="" name="facinfo"></td>
+				</tr>
+				<tr>
+					<td>地址：</td>
+					<td><input type="text" value="" name="facinfo"></td>
+				</tr>
+				<tr>
+					<td>联系电话：</td>
+					<td><input type="text" value="" name="facinfo"></td>
+				</tr>
+			</table>
+		</div>
+	</body>
+
+</html>

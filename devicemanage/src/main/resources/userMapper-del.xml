@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.UserDao">
+	<!--resultType注意这个返回类型，resultMap返回类型写法不一样，可以参考别的教程 -->
+	<select id="getUserList" resultType="com.model.User">
+		SELECT * FROM tb_user
+	</select>
+	
+	<!-- <select id="getUserList" resultType="com.model.User" parameterType="java.lang.Integer">
+		SELECT * FROM tb_user where id =#{id}
+	</select> -->
+	<!-- <select id="login" parameterType="com.model.User" resultType="com.model.User">
+    	select * from tb_user where name = #{arg0} and sex=#{arg1}
+    </select> -->
+</mapper>

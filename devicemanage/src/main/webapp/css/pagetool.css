@@ -1,0 +1,68 @@
+#pagenavbar {
+	/* min-width: 520px; */
+	width: 100%;
+	margin: 2em auto;
+	/* border:1px solid #98D2F5; */
+	border-radius: 5px;
+}
+
+#pagenavbar table input[type="button"] {
+	width: 32px;
+	font-weight: normal;
+	text-align: center;
+	outline: none;
+	padding: 2px 0px;
+	border-radius: 2px;
+	border: 0.2px solid #2299ff;
+
+}
+
+#pagenavbar table input[name="txbtn"] {
+	/* font-size:smaller; */
+	width: 44px;
+}
+
+#pagenavbar input[type="button"]:active {
+	background: #98d2f5;
+}
+
+/* 导航栏按钮-鼠标停留样式 */
+#pagenavbar input[type="button"]:hover {
+	background-color: #3eccff;
+	border-color: #cfcfcf;
+}
+
+/* 导航栏按钮-鼠标点击样式 */
+#pagenavbar input[type="button"]:active {
+	background: #98d2f5;
+}
+/* 去除样式 */
+#pagenavbar input.oldpage {
+	background-color: #CFCFCF;
+	pointer-events: auto;
+}
+
+#pagenavbar table {
+	text-align: center;
+	margin: 0.5em auto;
+	padding: 0.5px 4%;
+	
+}
+
+
+/* 当前按钮 */
+#pagenavbar input.currpage {
+	background-color: #98d2f5;
+	pointer-events: none;
+}
+
+/* 当前按钮-鼠标停留样式 */
+#pagenavbar input.currpage:hover {
+	cursor: pointer;
+	border-color: #cfcfcf;
+}
+
+/* 当前按钮-鼠标点击样式*/
+#pagenavbar input.currpage:active {
+	background-color: #3399FF;
+}
