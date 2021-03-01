@@ -1,0 +1,23 @@
+/* 奇偶选择器 */
+	table.contab tr:nth-of-type(odd){background-color: #c3dde0;} 
+	table.contab tr:nth-of-type(even){background-color: #d4e3e5;}
+	table.contab {
+		font-family: verdana,arial,sans-serif;
+		font-size:11px;
+		color:#333333;
+		border-width: 1px;
+		border-color: #a9c6c9;
+		border-collapse: collapse;
+	}
+	table.contab th {
+		border-width: 1px;
+		padding: 8px;
+		border-style: solid;
+		border-color: #a9c6c9;
+	}
+	table.contab td {
+		border-width: 1px;
+		padding: 8px;
+		border-style: solid;
+		border-color: #a9c6c9;
+	}

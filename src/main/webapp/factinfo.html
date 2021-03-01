@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script src="js/jquery-3.5.0.min.js"></script>
+		<title></title>
+		<style>
+			#factid{
+				width:420px;
+				height:320px;
+				position: absolute;
+				left:50%;
+				top:50%;
+				margin-top:-210px;
+				margin-left:-160px;
+				background-color: #93BFE6;
+				padding: 8px 8px;
+				color:white;
+			}
+			#factid table{
+				margin-left:24px;
+				width:100%;
+				height:100%;
+			}
+			
+		</style>
+		<script>
+			var BasePath = "http://localhost:8080/devicemanage/";
+			function fillFact(obj){
+				// var obj = JSON.parse(param);
+				var fact = document.getElementsByName("facinfo");
+				var heads = ["fac_id","fac_name","fac_addr","fac_phone"];
+				for(var i=0;i<fact.length;i++){
+					fact[i].value = obj[heads[i]];
+					fact[i].disabled="true";
+				}
+			}
+			function factInfo(param){
+				var facid = document.getElementById("factid");
+				if(param==2){
+					facid.style.display="none";
+					return;
+				}
+				facid.style.display="block";
+				var obj={id:param};
+				$.ajax({
+					url:BasePath+"factinfo.do",
+					data:obj,
+					type:"Get",
+					dataType:"json",
+					success:function(data){
+						fillFact(data);
+					},
+					error:function(e){
+						alert(JSON.stringify(e));
+					}
+				});
+			}
+			
+		</script>
+	</head>
+	
+	<body>
+		
+		<input type="button"  onclick="factInfo(1)" value="详情">
+		<div id="factid">
+			<input type="button" style="float:right;" class="btnbase" onclick="factInfo(2)" value="x">
+			<table>
+				<tr>
+					<td>厂家编号：</td>
+					<td><input type="text" value="" name="facinfo"></td>
+				</tr>
+				<tr>
+					<td>厂家名称：</td>
+					<td><input type="text" value="" name="facinfo"></td>
+				</tr>
+				<tr>
+					<td>地址：</td>
+					<td><input type="text" value="" name="facinfo"></td>
+				</tr>
+				<tr>
+					<td>联系电话：</td>
+					<td><input type="text" value="" name="facinfo"></td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

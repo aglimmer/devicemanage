@@ -1,0 +1,321 @@
+#borrowpop {
+
+	width: 620px;
+	height: 480px;
+	position: absolute;
+	display: none;
+	color: #333333;
+	/* line-height:28px; */
+	z-index: 100;
+	left: 50%;
+	top: 50%;
+	margin-left: -310px;
+	margin-top: -240px;
+	padding: 2em 2em;
+	/* text-align:center; */
+	background-color:#83C8E9;
+	/* #C8E5E9; */
+	/* #d4e8ff; */
+	font-size: 12px;
+}
+
+#borrowpop .closebtn {
+	position: absolute;
+	display: inline-block;
+	right: 8px;
+	top: 8px;
+	margin-bottom: 2em;
+	outline: none;
+	text-align: center;
+	border:none;
+	background-color: #83C8E9; 
+	/* background-color: whitesmoke; */
+	/* opacity: 0.1; */
+
+}
+#borrowpop .closebtn:hover{
+ background-color: #3ECCFF; 
+}
+#borrowpop .borrowcon {
+	width: 90%;
+	height: 90%;
+	margin: 1em auto;
+	/* border: 0px solid #e4fdff; */
+	padding: 12px 16px;
+}
+
+table {
+	margin: 0 auto;
+}
+
+#popdiv {
+	position: fixed;
+	display: none;
+	left: 0px;
+	top: 0px;
+	/* background: #000; */
+	border: 1 px solid #f5f3e2;
+	width: 100%;
+	height: 100%;
+	margin-top: -32px;
+	opacity: 1;
+}
+
+#popdiv .popcontainer {
+	position: relative;
+	width: 60%;
+	height: 80%;
+	background: #ffffea;
+	border-radius: 5px;
+	border: 1px solid #337AB7;
+	margin: 0 auto;
+}
+
+#popdiv .popview {
+	padding-top: 15px;
+	padding-left: 10px;
+
+	/* position: relative; */
+}
+
+#popdiv .btnclose {
+	position: absolute;
+	right: 8px;
+	top: 8px;
+	width: 25px;
+	height: 25px;
+
+	text-align: center;
+	line-height: 100%;
+	padding: 0.3em;
+	font: 16px Arial, sans-serif bold;
+	font-style: normal;
+	text-decoration: none;
+	margin: 2px;
+	vertical-align: text-bottom;
+	zoom: 1;
+	outline: none;
+	font-size-adjust: none;
+	font-stretch: normal;
+	border-radius: 5px;
+	/* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+	text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3); */
+	color: #fefee9;
+	border: 0.2px solid #2299ff;
+	background-repeat: repeat;
+	background-size: auto;
+	background-origin: padding-box;
+	background-clip: padding-box;
+	background-color: #3399ff;
+}
+
+#popdiv .btnclose:hover {
+	cursor: pointer;
+	background-color: #eeeeee;
+	border-color: #cfcfcf;
+}
+
+#popdiv .btnclose:active {
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+	color: #d4d4d4;
+}
+
+
+
+
+#searchdiv {
+	height: 40px;
+	min-width: 400px;
+	position: relative;
+	margin: 1em 1em;
+	background: #fff;
+
+	border-left: 1px solid #cccccc;
+	/* border-left: 3px solid #999999; */
+}
+
+#searchdiv .searchinfo {
+	height: 40px;
+	line-height: 40px;
+	width: 60%;
+	border: 1px solid #CCC;
+}
+
+#searchdiv input.search-text {
+	float: left;
+	height: 30px;
+	width: 200px;
+	margin-left: 10px;
+	border: 1px solid #ccc;
+}
+
+#searchdiv input.search-btn {
+	min-width: 80px;
+	height: 30px;
+	line-height: 30px;
+	background-color: #0089D2;
+	text-align: center;
+	color: #FFF;
+	border-radius: 4px;
+	border: none;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+#searchdiv input.search-btn:active {
+	background-color: #0066CC;
+}
+
+/* 显示区 */
+#contentdiv {
+	border: 1px solid #ccc;
+	max-width: 100%;
+	min-height: 100%;
+	background: white;
+	margin: 1em 1em;
+}
+
+/* 查询表格显示区 */
+#contentdiv .showinfo {
+
+	margin: 1em;
+	min-height: .25em;
+}
+
+/* 表格 */
+#contab {
+	width: 100%;
+	height: 460px;
+	margin-bottom: 20px;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+#contab table {
+	width: 100%;
+}
+
+#contab table tr {
+	height: 48px;
+}
+
+/*弹出修改 */
+#popdiv {
+	position: fixed;
+	display: none;
+	left: 0px;
+	top: 0px;
+	/* background: #000; */
+	border: 1 px solid #00B0F0;
+	width: 100%;
+	height: 100%;
+	opacity: 1;
+}
+
+#popdiv .popcontainer {
+	position: relative;
+	background: #BCD2DC;
+	width: 540px;
+	height: 420px;
+	margin: 5% auto;
+	padding: 14px 14px;
+	border-radius: 5px;
+
+}
+
+#popdiv .popview {
+	padding-top: 15px;
+	padding-left: 10px;
+	position: relative;
+}
+
+#popdiv .btnclose {
+	position: absolute;
+	right: 8px;
+	top: 8px;
+	width: 25px;
+	height: 25px;
+
+	text-align: center;
+	line-height: 100%;
+	padding: 0.3em;
+	font: 16px Arial, sans-serif bold;
+	font-style: normal;
+	text-decoration: none;
+	margin: 2px;
+	vertical-align: text-bottom;
+	zoom: 1;
+	outline: none;
+	font-size-adjust: none;
+	font-stretch: normal;
+	border-radius: 5px;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+	text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+	color: #fefee9;
+	border: 0.2px solid #2299ff;
+	background-repeat: repeat;
+	background-size: auto;
+	background-origin: padding-box;
+	background-clip: padding-box;
+	background-color: #ACC8D6;
+}
+
+#popdiv .btnclose:hover {
+	cursor: pointer;
+	background-color: #408FB6;
+	border-color: #cfcfcf;
+}
+
+#popdiv .btnclose:active {
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+	color: #d4d4d4;
+}
+
+#popdiv div.content {
+	position: relative;
+	top: 30px;
+}
+
+#searchdiv {
+	min-width: 400px;
+	position: relative;
+	/* min-height: 800px; */
+	background: #fff;
+	/* margin-left: 240px; */
+	border-left: 1px solid #cccccc;
+	/* border-left: 3px solid #999999; */
+}
+
+#searchdiv .searchinfo {
+	height: 40px;
+	line-height: 40px;
+	width: 100%;
+	border: 1px solid #CCC;
+}
+
+#searchdiv input.search-text {
+	float: left;
+	height: 30px;
+	width: 200px;
+	margin-left: 10px;
+	border: 1px solid #ccc;
+}
+/* 厂家信息 */
+#factid{
+				width:440px;
+				height:320px;
+				position: absolute;
+				left:50%;
+				top:50%;
+				margin-top:-220px;
+				margin-left:-160px;
+				display: none;
+				background-color: #93BFE6;
+				padding: 8px 8px;
+				color:white;
+			}
+			#factid table{
+				margin-left:24px;
+				width:100%;
+				height:100%;
+			}

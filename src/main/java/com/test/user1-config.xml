@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <!-- 配置数据库连接信息 -->
+      <dataSource type="POOLED">
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/equipmanage?useUnicode=true&amp;characterEncoding=utf8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="666666"/>
+      </dataSource>
+    </environment>
+  </environments>
+  
+  <mappers>
+      <!-- 注册UserMapper映射接口-->
+     <!--  <mapper resource="com/wz/UserInterface2.xml"/> -->
+     <!--  由于使用的是注解，所以可以替换使用 <mapper resource="com/wz/UserMapper.xml"/> -->
+     <mapper class="com.dao.LoginDao"/>
+     <mapper class="com.dao.PrimaryDeviceDao"/>
+    <mapper class="com.test.User1Interface"/>
+  </mappers>
+</configuration>
