@@ -1,4 +1,4 @@
-package com.test;
+package com.testcase;
 
 import java.nio.charset.Charset;
 
@@ -6,8 +6,8 @@ import java.nio.charset.Charset;
  * @Author: wonzeng
  * @CreateTime: 2020-09-11
  */
-public class Main {
-    public Main() {
+public class CharsetTest {
+    public CharsetTest() {
 
     }
 

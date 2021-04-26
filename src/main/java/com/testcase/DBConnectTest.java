@@ -1,4 +1,4 @@
-package com.test;
+package com.testcase;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,17 +7,15 @@ import java.sql.SQLException;
 
 
 
-public class Connect {
+public class DBConnectTest {
 	private Connection conn = null;
 	private StringBuilder error = new StringBuilder();
 	
 	public static void main(String[]args) {
-		Connect p = new Connect();
+		DBConnectTest p = new DBConnectTest();
 		Connection con = p.getConnect();
-//		p.test(con);
-		
 	}
-	public Connect() {}
+	public DBConnectTest() {}
 	public void close() {
 		if(conn!=null) {
 			try {
@@ -39,7 +37,7 @@ public class Connect {
 			System.out.println(error.toString());
 //			e.printStackTrace();
 		}
-		String url = "jdbc:mysql://localhost/bookmanage?useUnicode=true&characterEncoding=utf8";
+		String url = "jdbc:mysql://localhost/devicemanage?useUnicode=true&characterEncoding=utf8";
 		try {//666666
 			conn =  DriverManager.getConnection(url,"root","666666");//wzAB!_111222
 			System.out.println("Connect.getConnect():连接成功");

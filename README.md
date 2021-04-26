@@ -46,45 +46,66 @@ spring功能是实现参数参数注入，请求分发处理，对数据库操�
 
 具有一定安全性，项目的静态页面的直接访问进行过滤器设计，未登录情况下无法直接访问；对发送的请求进行拦截器设计，请求以不同的后缀名区分哪些资源能够匿名访问，哪些必须通过会话中的登录验证才能访问
 
+## 使用说明
+1. 把项目导入idea2019，然后使用`devicemanage.sql`创建与该项目同名的数据库
+2. 修改`xml`中关于数据库mysql连接的信息，先测试连数据库能够正常
+3. 最简单的启动方式，可以选择使用命令`mvm tomcat7:run`启动tomcat便可访问，无需单独配置tomcat，因为使用的是`pom.xml`插件指定的的tomcat
+4. 如果不使用上面mvn命令配置tomcat，那么这里可参考版本`tomcat9.0.22`，并tomcat配置页面配置访问路径：
+```
+#该路径如果要定义为其他，需要修改login.html中指定的全局的BASE_URL与后端一致，并且需要检查后端图片请求的路径
+http://localhost:8080/devicemanage
+```
+5. 使用默认测试账号登录
+
+```shell script
+管理员账号
+G0001
+123456
+
+用户账号
+3182701101
+123456
+```
+6. 项目这次已经更新了大部分bug以方便初学者学习，由于该项目比较基础简单，后面除非有必要才会再更新了
 
 
 ## 实现效果
 
 ### 1.登录首页
 
-![image-20200913215359775](https://github.com/wonzeng/goldensky/blob/master/devicemanage/pictures/image-20200913215359775.png)
+![image-20200913215359775](pictures/image-20200913215359775.png)
 
 ### 2.功能首页
 
-![image-20200913215501374](https://github.com/wonzeng/goldensky/blob/master/devicemanage/pictures/image-20200913215501374.png)
+![image-20200913215501374](pictures/image-20200913215501374.png)
 
 ### 3.分页效果
 
-![image-20200913215706727](https://github.com/wonzeng/goldensky/blob/master/devicemanage/pictures/image-20200913215706727.png)
+![image-20200913215706727](pictures/image-20200913215706727.png)
 
 ### 4.操作选项
 
-![image-20200913215859445](https://github.com/wonzeng/goldensky/blob/master/devicemanage/pictures/image-20200913215859445.png)
+![image-20200913215859445](pictures/image-20200913215859445.png)
 
 ### 5.图片上传
 
-![image-20200913220241280](https://github.com/wonzeng/goldensky/blob/master/devicemanage/pictures/image-20200913220241280.png)
+![image-20200913220241280](pictures/image-20200913220241280.png)
 
 ### 6.图片查看
 
-![image-20200913220132748](https://github.com/wonzeng/goldensky/blob/master/devicemanage/pictures/image-20200913220132748.png)
+![image-20200913220132748](pictures/image-20200913220132748.png)
 
 ### 7.管理员页面
 
-![image-20200913220744138](https://github.com/wonzeng/goldensky/blob/master/devicemanage/pictures/image-20200913220744138.png)
+![image-20200913220744138](pictures/image-20200913220744138.png)
 
 ### 8.管理员权限
 
-![image-20200913220857841](https://github.com/wonzeng/goldensky/blob/master/devicemanage/pictures/image-20200913220857841.png)
+![image-20200913220857841](pictures/image-20200913220857841.png)
 
 ### 9.意见反馈
 
-![image-20200913221043213](https://github.com/wonzeng/goldensky/blob/master/devicemanage/pictures/image-20200913221043213.png)
+![image-20200913221043213](pictures/image-20200913221043213.png)
 
 
 

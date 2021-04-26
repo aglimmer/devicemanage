@@ -25,10 +25,11 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }else{
             System.out.println("未处于登录状态...");
-            response.sendRedirect(request.getContextPath() + "/index.html");
+            //转发到指定页面
+            //request.getRequestDispatcher(request.getContextPath() + "/404.html").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/404.html");
             return false;
         }
-//        return true;
     }
     //目标方法运行之后，返回之前工作
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {

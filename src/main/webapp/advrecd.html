@@ -62,15 +62,15 @@
 			
 		</style>
 		<script>
-			var BasePath = "http://localhost:8080/devicemanage/";
 			var session = window.sessionStorage;
+			var BASE_URL = session.getItem("BASE_URL");
 			function sendFeedBack() {
 				obj = {
 					pos: 0,
 					size: 10
 				};
 				$.ajax({
-					url: BasePath+"advice.do",
+					url: BASE_URL+"/advice.do",
 					data: obj,
 					type: "Get",
 					dataType: "json",
@@ -136,7 +136,7 @@
 				var obj = {};
 				obj.fee_id = fee_id;
 				$.ajax({
-					url: BasePath+"deladvice.do",
+					url: BASE_URL+"/deladvice.do",
 					data: obj,
 					type: "Get",
 					dataType: "json",
@@ -163,7 +163,7 @@
 				obj.fee_id = info[0].value;
 				obj.adm_answer = info[1].value;
 				$.ajax({
-					url: BasePath+"dealadvice.do",
+					url: BASE_URL+"/dealadvice.do",
 					data: obj,
 					type: "Get",
 					dataType: "json",

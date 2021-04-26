@@ -23,10 +23,6 @@ import com.model.Usingrecord;
  * @author Lenovo
  *
  */
-/**
- * @author Lenovo
- *
- */
 public interface PrimaryDeviceDao {
 
 	/**

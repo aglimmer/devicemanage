@@ -28,8 +28,9 @@
     <filter-name>SafeFilter</filter-name>
     <filter-class>com.util.SafeFilter</filter-class>
     <init-param>
+      <!--在没有登录的条件下用户能够访问那些html文件-->
       <param-name>ignore</param-name>
-      <param-value>/welcome.html,/index.html</param-value>
+      <param-value>/login.html,/welcome.html,/index.html,/admin_top.html,/left.html,/404.html</param-value>
     </init-param>
   </filter>
   <filter-mapping>

@@ -60,10 +60,9 @@
 		
 	</style>
 	<script>
-		var BasePath = "http://127.0.0.1:8080/devicemanage/";
+		var BASE_URL =window.sessionStorage.getItem("BASE_URL");
 		function dialogSave(){
 			var arr = document.getElementsByName("info");
-			// alert(arr[3].value=="");
 			var obj = {};
 			var heads = ["equ_name","equ_type","equ_unit","equ_singleprice","equ_total","equ_curr","equ_purchasedate","equ_purchaser","equ_position","fac_name","fac_addr","fac_phone","equ_spec"];
 			obj["equ_spec"] = document.getElementById("equ_spec1").value;
@@ -80,7 +79,7 @@
 			}
 			// document.getElementById("tip").innerHTML=JSON.stringify(obj);
 			$.ajax({
-				url: BasePath+"addequ.do",
+				url: BASE_URL+"addequ.do",
 				data: obj,
 				type: "POST",
 				dataType: "json",
@@ -104,7 +103,7 @@
 					var pp = {"sex":"男","age":"35"};
 					// pp.info=qq;
 					$.ajax({
-						url: BasePath+"addequ.do",
+						url: BASE_URL+"addequ.do",
 						data: pp,
 						type: "POST",
 						dataType: "json",

@@ -24,6 +24,6 @@ public class LoginService {
     public User loginUserImp(String userid, String userpw, String usertype) {
         return logindao.loginUser(userid, userpw, usertype);
 
-    }
 
+    }
 }

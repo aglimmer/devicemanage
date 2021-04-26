@@ -85,7 +85,7 @@
 <!--      <version>9.0.22</version>-->
 <!--    </dependency>-->
 
-    <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina -->
+<!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina &ndash;&gt;-->
 <!--    <dependency>-->
 <!--      <groupId>org.apache.tomcat</groupId>-->
 <!--      <artifactId>tomcat-catalina</artifactId>-->
@@ -118,11 +118,22 @@
       <version>1.7.30</version>
       <scope>compile</scope>
     </dependency>
-
-
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <!--让src目录下的xml文件在java源文件编译时不要被过滤，允许一起编译-->
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>
@@ -134,7 +145,7 @@
             <port>8080</port>
             <!--  path改变访问路径，必须以/开头，例如：/hello，请求时将会变成 http://localhost:8080/hello-->
             <path>/devicemanage</path>
-            <server>tomcat9</server>
+            <server>tomcat</server>
             <username>tomcat</username>
             <password>tomcat</password>
             <url>http://127.0.0.1:8080/manager/text</url>
@@ -173,5 +184,15 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>

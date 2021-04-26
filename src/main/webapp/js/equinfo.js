@@ -1,4 +1,4 @@
-var BasePath = "http://localhost:8080/devicemanage/";
+var BASE_URL = window.sessionStorage.getItem("BASE_URL");
 function borrowFill(obj) {
 	// user_id varchar(20),
 	// equid int,
@@ -65,7 +65,7 @@ function borrowSend() {
 	param.usi_day = obj.usi_day;
 
 	$.ajax({
-		url: BasePath+"borrowequ.do",
+		url: BASE_URL+"/borrowequ.do",
 		data: param,
 		type: "GET",
 		dataType: "json",
@@ -108,7 +108,7 @@ function delinfo(data) {
 	obj.adm_id = session.getItem("userid");
 	obj.equ_id =JSON.parse(data).equ_id;
 	$.ajax({
-		url: BasePath+"delequip.do",
+		url: BASE_URL+"/delequip.do",
 		data: obj,
 		type: "GET",
 		dataType: "json",
@@ -167,7 +167,7 @@ function saveEquipment() {
 
 	// alert(JSON.stringify(obj));
 	$.ajax({
-		url: BasePath+"modifyequ.do",
+		url: BASE_URL+"/modifyequ.do",
 		data: obj,
 		type: "GET",
 		dataType: "json",
@@ -223,7 +223,7 @@ function initSearchSize(obj, total) {
 	obj.end = Page.limitsize;
 	// Page对象
 	$.ajax({
-		url: BasePath+"searchequ.do",
+		url: BASE_URL+"/searchequ.do",
 		data: obj,
 		type: "GET",
 		dataType: "json",
@@ -246,7 +246,7 @@ function classifyEquipment() {
 	obj.start = beginpos;
 	obj.end = Page.limitsize;
 	$.ajax({
-		url: BasePath+"searchequ.do",
+		url: BASE_URL+"/searchequ.do",
 		data: obj,
 		type: "GET",
 		dataType: "json",
@@ -275,7 +275,7 @@ function searchInfo() {
 	obj.type = $("input[name=choice]:checked").val();
 	obj.content = $("input[name=message]").val();
 	$.ajax({
-		url: BasePath+"searchinit.do",
+		url: BASE_URL+"/searchinit.do",
 		data: obj,
 		type: "GET",
 		dataType: "json",
@@ -312,7 +312,7 @@ function factInfo(param) {
 	};
 	// alert(obj.id);
 	$.ajax({
-		url: BasePath+"factinfo.do",
+		url: BASE_URL+"/factinfo.do",
 		data: obj,
 		type: "Get",
 		dataType: "json",

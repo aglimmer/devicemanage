@@ -50,13 +50,13 @@
 		}
 		</style>
 		<script>
-			var BasePath = "http://localhost:8080/devicemanage/";
+			var BASE_URL=window.sessionStorage.getItem("BASE_URL");
 			function repairRecord(){
 				var info = {};
 				info.pos = 0;
 				info.size = 10;
 				$.ajax({
-					url: BasePath+"recordrepair.do",
+					url: BASE_URL+"/recordrepair.do",
 					data: info,
 					type: "get",
 					dataType: "json",
@@ -132,7 +132,7 @@
 				info.pos = 0;
 				info.size = 10;
 				$.ajax({
-					url: BasePath+"recordscrap.do",
+					url: BASE_URL+"/recordscrap.do",
 					data: info,
 					type: "get",
 					dataType: "json",

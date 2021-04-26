@@ -18,6 +18,6 @@ public interface LoginDao {
 //	查询管理员
 	@Select("Select * from tb_admin where adm_id=#{arg0} and adm_passwd=#{arg1}")
 	public Adm loginAdm(String admid, String admpasswd);
-	
+
 
 }

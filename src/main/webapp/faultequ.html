@@ -95,8 +95,8 @@
 			
 		</style>
 		<script>
-			var BasePath = "http://localhost:8080/devicemanage/";
 			var session = window.sessionStorage;
+			var BASE_URL = session.getItem("BASE_URL");
 			// 处理弹窗关闭
 			function closeFault(){
 				document.getElementById("faultdiv").style.display="none";
@@ -115,7 +115,7 @@
 				// 发送请求
 				var info = {fau_id:pp[0].value,adm_message:pp[1].value,adm_answer:pp[2].value};
 				$.ajax({
-					url: BasePath+"savefaul.do",
+					url: BASE_URL+"/savefaul.do",
 					data: info,
 					type: "get",
 					dataType: "json",
@@ -226,7 +226,7 @@
 				// return;
 				// alert(obj.fau_img);
 				$.ajax({
-					url: BasePath+"getimg.do",
+					url: BASE_URL+"/getimg.do",
 					data: obj,
 					type: "get",
 					dataType: "json",
@@ -255,7 +255,7 @@
 				// alert(fauid);
 				obj.usertype=session.getItem("usertype");
 				$.ajax({
-					url: BasePath+"delfau.do",
+					url: BASE_URL+"/delfau.do",
 					data: obj,
 					type: "Get",
 					dataType: "json",
@@ -292,9 +292,8 @@
 				obj.adm_id = session.getItem("userid");
 				obj.pos1 = 0;
 				obj.pos2 = 10;
-				// http://localhost:8080/devicemanage/faultinfo.do?adm_id=3182701101&pos1=0&pos2=10
 				$.ajax({
-					url: BasePath+"faultinfo.do",
+					url: BASE_URL+"/faultinfo.do",
 					data: obj,
 					type: "Get",
 					dataType: "json",
@@ -373,7 +372,7 @@
 					obj.adm_id="G0001";
 					// alert("0000");
 					$.ajax({
-						url: BasePath+"repair.do",
+						url: BASE_URL+"/repair.do",
 						data: obj,
 						type: "Get",
 						dataType: "json",
@@ -405,7 +404,7 @@
 					}
 					// alert(JSON.stringify(obj));
 					$.ajax({
-						url: BasePath+"scrap.do",
+						url: BASE_URL+"/scrap.do",
 						data: obj,
 						type: "Get",
 						dataType: "json",

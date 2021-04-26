@@ -27,7 +27,7 @@
 				height:100%;
 				margin:18px auto;
 				padding:0 18px;
-				background-color: #F2F2F2;
+				/* background-color: #F2F2F2; */
 			}
 			#content{
 				margin-top:10px;
@@ -54,7 +54,7 @@
 			}
 		</style>
 		<script>
-			var BasePath = "http://localhost:8080/devicemanage/";
+			var BASE_URL = window.sessionStorage.getItem("BASE_URL");
 			var session = window.sessionStorage;
 			function buyApplyPrint() {
 				var userid = session.getItem("userid");
@@ -128,7 +128,7 @@
 					
 				}
 				$.ajax({
-					url: BasePath+"buyequ.do",
+					url: BASE_URL+"/buyequ.do",
 					data: obj,
 					type: "GET",
 					dataType: "json",
@@ -155,7 +155,7 @@
 	</head>
 	<body>
 		<div id="maindiv">
-			<p style="background-color: #366AB3; font:bold;padding:8px 8px;width:100%;color:white;">购买申请</p>
+			<div style="background-color: #366AB3; font:bold;padding:8px 8px;width:100%;color:white;">购买申请</div>
 			<div id="content">
 			</div>
 		</div>

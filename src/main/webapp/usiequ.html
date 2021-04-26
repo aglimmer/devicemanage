@@ -122,9 +122,10 @@
 			}
 		</style>
 		<script>
-			// 使用申请记录搜索框
-			var BasePath = "http://localhost:8080/devicemanage/";
 			var session = window.sessionStorage;
+			// 使用申请记录搜索框
+			var BASE_URL = session.getItem("BASE_URL");
+			
 				function usiRecordInfo(){
 					var obj = {};
 					var userid = document.getElementById("userid");
@@ -156,7 +157,7 @@
 				}
 				function usiRecord(obj){
 					$.ajax({
-						url: BasePath+"usirecord.do",
+						url: BASE_URL+"/usirecord.do",
 						data: obj,
 						type: "GET",
 						dataType: "json",
@@ -258,7 +259,7 @@
 				// {usi_id},#{equ_id},#{usi_number},#{usi_applystatus},#{adm_feedbackapply},#{usi_returnstatus},#{adm_feedbackreturn}
 				// alert(JSON.stringify(obj));
 				$.ajax({
-					url: BasePath+"dealusi.do",
+					url: BASE_URL+"/dealusi.do",
 					data: obj,
 					type: "GET",
 					dataType: "json",
@@ -391,7 +392,7 @@
 				obj.user_type = usertype;
 				obj.usi_id = p.usi_id;
 				$.ajax({
-					url: BasePath+"delusingrecord.do",
+					url: BASE_URL+"/delusingrecord.do",
 					data: obj,
 					type: "GET",
 					dataType: "json",
@@ -432,7 +433,7 @@
 					}
 				}
 				$.ajax({
-					url: BasePath+"savepurchase.do",
+					url: BASE_URL+"/savepurchase.do",
 					data: obj,
 					type: "GET",
 					dataType: "json",
@@ -484,7 +485,7 @@
 			function giveBack(param){     
 				var param = JSON.parse(param);
 				var req = new XMLHttpRequest();
-				var url = BasePath+"giveback.do?usi_id="+param.usi_id;
+				var url = BASE_URL+"/giveback.do?usi_id="+param.usi_id;
 				req.open("GET",url,true);
 				req.onload=function(){
 					var res = "请求提交成功！";
@@ -522,7 +523,7 @@
 				param["fau_img"] = img;
 				// alert(JSON.stringify(param));
 				$.ajax({
-					url: BasePath+"faultup.do",
+					url: BASE_URL+"/faultup.do",
 					data:param,
 					// 传递的是图片文件，这里不能用GET方法
 					type: "POST",

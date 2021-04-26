@@ -56,7 +56,7 @@
 			}
 		</style>
 		<script>
-			var BasePath = "http://localhost:8080/devicemanage/";
+			var BASE_URL = window.sessionStorage.getItem("BASE_URL");
 			function sendFeedBack(){
 				var session = window.sessionStorage;
 				var question = document.getElementById("fee_question");
@@ -88,7 +88,7 @@
 				obj.adm_message = "已发送";
 				obj.adm_answer = "暂无消息";
 				$.ajax({
-					url: BasePath+"addadvice.do",
+					url: BASE_URL+"/addadvice.do",
 					data: obj,
 					type: "Get",
 					dataType: "json",

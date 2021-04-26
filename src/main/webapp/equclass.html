@@ -50,7 +50,7 @@
 			}
 		</style>
 		<script>
-			var BasePath = "http://localhost:8080/devicemanage/";
+			var BASE_URL = window.sessionStorage.getItem("BASE_URL");
 			var ContentInfo = {
 				recover: ""
 			}
@@ -60,7 +60,7 @@
 				obj.start = 0;
 				obj.end = 10;
 				$.ajax({
-					url: BasePath+"querytype.do",
+					url: BASE_URL+"/querytype.do",
 					data: obj,
 					xhrFields: {
 						withCredentials: true
@@ -86,7 +86,7 @@
 				obj.start = 0;
 				obj.end = 10;
 				$.ajax({
-					url: BasePath +"spectype.do",
+					url: BASE_URL +"/spectype.do",
 					data: obj,
 					type: "GET",
 					dataType: "json",
