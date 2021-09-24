@@ -74,13 +74,14 @@ public class UsingDeviceService {
             map.put("user_type", usertype);
 
         }catch(NullPointerException e) {
-//			System.out.println("EquipController.usiRecord():"+e.getMessage());
+			System.out.println("EquipController.usiRecord():"+e.getMessage());
             System.out.println("异常信息 = " + e.getCause());
             map.put("user_type", 1);
         }
         List<Usingrecord> astr = usingDeviceDao.usiRecordInfo(map);
-//		System.out.println("EquipController.usiRecord():"+astr.size());
         Gson gson = new Gson();
-        return gson.toJson(astr);
+        String result =  gson.toJson(astr);
+        System.out.println("result = " + result);
+        return result;
     }
 }

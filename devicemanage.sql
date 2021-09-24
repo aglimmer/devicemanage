@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : mysql8-local
+ Source Server         : mysql8-localhost-root
  Source Server Type    : MySQL
  Source Server Version : 80017
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 27/04/2021 02:29:12
+ Date: 24/09/2021 21:28:26
 */
 
 SET NAMES utf8mb4;
@@ -74,15 +74,15 @@ CREATE TABLE `tb_admin`  (
 -- ----------------------------
 -- Records of tb_admin
 -- ----------------------------
-INSERT INTO `tb_admin` VALUES ('G0001', '123456', '张三', '2363-07953005', '工A104');
-INSERT INTO `tb_admin` VALUES ('G0003', 'pw1234', '万煜城', '400-24773948', '工A204');
-INSERT INTO `tb_admin` VALUES ('G0004', 'pw1238', '高伟祺', '311-27896677', '工C214');
-INSERT INTO `tb_admin` VALUES ('G0005', 'pw4567', '田怡丞', '311-27896676', '工C510');
-INSERT INTO `tb_admin` VALUES ('G0006', 'pw9090', '薛 明', '311-27995676', '工C411');
-INSERT INTO `tb_admin` VALUES ('G0007', 'pw9887', '谭天翊', '6088-87771368', '工B611');
-INSERT INTO `tb_admin` VALUES ('G0008', 'pw2345', '白 伟祺', '6088-87672367', '工B612');
-INSERT INTO `tb_admin` VALUES ('G0009', 'pw9999', ' 孙 果', '6088-87672367', '工B612');
-INSERT INTO `tb_admin` VALUES ('G0010', 'pw7898', ' 熊泽洋', '56419391324', '3B212');
+INSERT INTO `tb_admin` VALUES ('G0001', 'ZQY_56', '詹菁英', '2363-07953005', '工A104');
+INSERT INTO `tb_admin` VALUES ('G0003', 'Ms. W', '万煜城', '400-24773948', '工A204');
+INSERT INTO `tb_admin` VALUES ('G0004', '孟.name', '高伟祺', '311-27896677', '工C214');
+INSERT INTO `tb_admin` VALUES ('G0005', ' 杨.biz', '田怡丞', '311-27896676', '工C510');
+INSERT INTO `tb_admin` VALUES ('G0006', ' JsK_v', '薛 明', '311-27995676', '工C411');
+INSERT INTO `tb_admin` VALUES ('G0007', ' 林.org', '谭天翊', '6088-87771368', '工B611');
+INSERT INTO `tb_admin` VALUES ('G0008', ' 萧.net', '白 伟祺', '6088-87672367', '工B612');
+INSERT INTO `tb_admin` VALUES ('G0009', ' 烨华 Group', ' 孙 果', '6088-87672367', '工B612');
+INSERT INTO `tb_admin` VALUES ('G0010', ' 刘.net', '  熊 泽洋', '56419391324', '3B212');
 INSERT INTO `tb_admin` VALUES ('G0011', 'pwd666', '张晓', '19959372281', '福建福州');
 
 -- ----------------------------
@@ -104,7 +104,7 @@ CREATE TABLE `tb_equipment`  (
   `equ_position` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   `del` tinyint(4) NULL DEFAULT 0,
   PRIMARY KEY (`equ_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 50 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_equipment
@@ -147,6 +147,9 @@ INSERT INTO `tb_equipment` VALUES (35, 15, '药材制粒实验装置  ', '制药
 INSERT INTO `tb_equipment` VALUES (37, 15, '中药提取实验装置', '制药工程实验装置', '2015-05-04', '张志东', 42000, '套', '中药提取', 1, 1, '工B612', 0);
 INSERT INTO `tb_equipment` VALUES (48, 5, '联想电脑', '未分类', '2020-06-10', '张晓晓', 2399, '台', '办公电脑', 5, 5, '', 0);
 INSERT INTO `tb_equipment` VALUES (49, 5, '联想h350', '未分类', '2020-06-10', '张静', 2399, '台', '鼠标、显示屏、主机', 1, 1, '工科楼A205', 0);
+INSERT INTO `tb_equipment` VALUES (50, 0, '笔记本电脑', NULL, '2021-03-14', '张三', 10000, '台', '', 1, 1, '', 0);
+INSERT INTO `tb_equipment` VALUES (51, 0, '笔记本电脑', NULL, '2021-03-16', '张三', 10000, '台', '测试', 1, 1, '', 0);
+INSERT INTO `tb_equipment` VALUES (52, 0, '电脑h300', NULL, '2021-03-16', 'zhangxiao', 10000, '个', '', 1, 1, '', 0);
 
 -- ----------------------------
 -- Table structure for tb_factory
@@ -158,7 +161,7 @@ CREATE TABLE `tb_factory`  (
   `fac_addr` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `fac_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   PRIMARY KEY (`fac_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_factory
@@ -203,18 +206,15 @@ CREATE TABLE `tb_faultrecord`  (
   `user_del` tinyint(4) NULL DEFAULT 0,
   `adm_message` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '无处理项',
   PRIMARY KEY (`fau_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_faultrecord
 -- ----------------------------
 INSERT INTO `tb_faultrecord` VALUES (1, 'G0001', 2, '3182701101', '2020-06-12', '未知', '该设备在使用过程', '200614223230193.jpg', '123', 0, 1, '待处理');
-INSERT INTO `tb_faultrecord` VALUES (2, 'G0001', 2, '3182701101', '2020-06-02', '', '1234231', '无图片', '处理通过', 1, 1, '已处理');
-INSERT INTO `tb_faultrecord` VALUES (3, 'G0001', 2, '3182701101', '2020-06-14', '未知', '设备卡顿', '200614223230194.jpg', '', 0, 1, '待处理');
-INSERT INTO `tb_faultrecord` VALUES (4, 'G0001', 2, '3182701101', '2020-06-14', '未知', '设备卡顿', '200614223230195.jpg', '消息已收到', 0, 0, '待解决');
-INSERT INTO `tb_faultrecord` VALUES (5, 'G0001', 2, '3182701101', '2020-06-17', '实验室', '设备无法正常使用', '无图片', '', 0, 1, '待处理');
-INSERT INTO `tb_faultrecord` VALUES (6, 'G0001', 2, '3182701101', '2020-06-19', '教室B207', '教学楼B203有7张桌椅磨损，螺丝松动不稳固', '200614223230196.jpg', '', 0, 0, '待处理');
-INSERT INTO `tb_faultrecord` VALUES (7, 'G0001', 2, '3182701101', '2020-06-20', '未知', '测试', '200614223230197.jpg', '', 0, 0, '待处理');
+INSERT INTO `tb_faultrecord` VALUES (6, 'G0001', 2, '3182701101', '2020-06-19', '教室B207', '教学楼B203有7张桌椅磨损，螺丝松动不稳固', '200614223230194.jpg', '', 0, 1, '待处理');
+INSERT INTO `tb_faultrecord` VALUES (7, 'G0001', 2, '3182701101', '2020-06-20', '未知', '测试', '200614223230195.jpg', '', 0, 0, '待处理');
+INSERT INTO `tb_faultrecord` VALUES (8, 'G0001', 6, '3182701101', '2021-09-24', '当前位置测试', '设备需要修理', '200614223230196.jpg', '', 0, 0, '待处理');
 
 -- ----------------------------
 -- Table structure for tb_feedback
@@ -229,14 +229,14 @@ CREATE TABLE `tb_feedback`  (
   `adm_answer` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   `del` tinyint(4) NULL DEFAULT 0,
   PRIMARY KEY (`fee_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_feedback
 -- ----------------------------
 INSERT INTO `tb_feedback` VALUES (2, '3182701101', '设备故障问题', '借不到设备问题', '已发送', '测试', 0);
 INSERT INTO `tb_feedback` VALUES (3, 'G0001', '借用设备问题', 'xxx问题', '已发送', '暂无消息', 0);
-INSERT INTO `tb_feedback` VALUES (4, 'G0001', '借用设备问题', '简单测试', '已发送', '暂无消息', 0);
+INSERT INTO `tb_feedback` VALUES (4, 'G0001', '设备故障问题', '故障问题描述。。。', '已发送', '暂无消息', 0);
 
 -- ----------------------------
 -- Table structure for tb_purchase
@@ -277,7 +277,7 @@ CREATE TABLE `tb_repairrecord`  (
   `rep_date` date NULL DEFAULT NULL,
   `rep_result` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   PRIMARY KEY (`rep_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_repairrecord
@@ -295,7 +295,7 @@ CREATE TABLE `tb_scraprecord`  (
   `scr_reason` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
   `scr_date` date NULL DEFAULT NULL,
   PRIMARY KEY (`scr_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_scraprecord
@@ -303,20 +303,6 @@ CREATE TABLE `tb_scraprecord`  (
 INSERT INTO `tb_scraprecord` VALUES (1, 'G0001', 1, '设备出现故障', '2020-05-20');
 INSERT INTO `tb_scraprecord` VALUES (2, 'G0001', 1, '设备出现故障', '2020-05-20');
 INSERT INTO `tb_scraprecord` VALUES (3, 'G0001', 2, '无法解决异常', '2020-06-03');
-
--- ----------------------------
--- Table structure for tb_temp
--- ----------------------------
-DROP TABLE IF EXISTS `tb_temp`;
-CREATE TABLE `tb_temp`  (
-  `tid` int(11) NOT NULL AUTO_INCREMENT,
-  `tname` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
-  `tmsg` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'ch',
-  `salary1` float NULL DEFAULT 0,
-  `salary2` double(15, 11) NULL DEFAULT 9.01234567890,
-  `tage` tinyint(4) NULL DEFAULT 0,
-  PRIMARY KEY (`tid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_user
@@ -336,17 +322,17 @@ CREATE TABLE `tb_user`  (
 -- ----------------------------
 -- Records of tb_user
 -- ----------------------------
-INSERT INTO `tb_user` VALUES ('1112223334', '823693', '刘建', '老师', '软件学院', '3330948300@qq.com', ' 18018180000');
-INSERT INTO `tb_user` VALUES ('1112223335', '390782', '陈建', '老师', '软件学院', '3330948301@qq.com', ' 18018180001');
-INSERT INTO `tb_user` VALUES ('1112223336', '823693', '何富贵', '老师', '软件学院', '3330948302@qq.com', ' 18018180002');
-INSERT INTO `tb_user` VALUES ('1112223337', '509200', '范雷', '老师', '数科学院', '3330948303@qq.com', ' 18018180003');
-INSERT INTO `tb_user` VALUES ('1112223338', '427841', '陈雷', '老师', '经管学院', '3330948304@qq.com', ' 18018180004');
-INSERT INTO `tb_user` VALUES ('1112223339', '593012', '古凡', '老师', '海洋学院', '3330948305@qq.com', ' 18018180005');
-INSERT INTO `tb_user` VALUES ('3182701101', '123456', '李四', '学生', '海峡学院', '3330948306@qq.com', ' 18018180006');
-INSERT INTO `tb_user` VALUES ('3182703137', '945067', '文祥', '学生', '软件学院', '3330948307@qq.com', ' 18018180007');
-INSERT INTO `tb_user` VALUES ('3182703158', 'pz2312', '张洋', '学生', '软件学院', '3330948308@qq.com', ' 18018180008');
-INSERT INTO `tb_user` VALUES ('3182703160', '524400', '杨洋', '学生', '数科学院', '3330948309@qq.com', ' 18018180009');
-INSERT INTO `tb_user` VALUES ('3182703161', 'skypw666', '王杨', '学生', '软件学院', '3330948310@qq.com', ' 18018180010');
+INSERT INTO `tb_user` VALUES ('1112223334', '823693', '张玉', '老师', '计算机与控制工程学院', '873411000@qq.com', ' 18649823693');
+INSERT INTO `tb_user` VALUES ('1112223335', '390782', '胡峰', '老师', '计算机与控制工程学院', '34539000@qq.com', ' 18647323593');
+INSERT INTO `tb_user` VALUES ('1112223336', '823693', '徐翔', '老师', '计算机与控制工程学院', '449013123@qq.com', ' 18649523643');
+INSERT INTO `tb_user` VALUES ('1112223337', '509200', '范方', '老师', '数学与数据科学学院', '1070509234@qq.com', ' 18643823673');
+INSERT INTO `tb_user` VALUES ('1112223338', '427841', '陈亮', '老师', '经济与管理学院', '54278456@qq.com', ' 18649823693');
+INSERT INTO `tb_user` VALUES ('1112223339', '593012', '古天乐', '老师', '体育学院', '675593678@qq.com', ' 18649823693');
+INSERT INTO `tb_user` VALUES ('3182701101', '640086', '林心怡', '学生', '人文学院', '1254640567@qq.com', ' 13110769123');
+INSERT INTO `tb_user` VALUES ('3182703137', '945067', '翁上官人', '学生', '计算机与控制工程学院', '180945000@qq.com', ' 13799326123');
+INSERT INTO `tb_user` VALUES ('3182703158', '921127', '张玉', '学生', '计算机与控制工程学院', '2636558000@qq.com', ' 18748757023');
+INSERT INTO `tb_user` VALUES ('3182703160', '524400', '何宇', '学生', '计算机与控制工程学院', '3249652000@qq.com', ' 13110769111');
+INSERT INTO `tb_user` VALUES ('sky666', 'skypw666', '汪峰', '学生', '计算机系', '2220940999@qq.com', '178234577333');
 
 -- ----------------------------
 -- Table structure for tb_usingrecord
@@ -368,12 +354,12 @@ CREATE TABLE `tb_usingrecord`  (
   `user_del` tinyint(4) NULL DEFAULT 0,
   `adm_del` tinyint(4) NULL DEFAULT 0,
   PRIMARY KEY (`usi_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_usingrecord
 -- ----------------------------
-INSERT INTO `tb_usingrecord` VALUES (4, '3182701101', 2, 'G0001', '测试', 3, '2020-06-12', '2020-06-13', '通过', ' ', '无处理项', '', 0, 0);
+INSERT INTO `tb_usingrecord` VALUES (4, '3182701101', 2, 'G0001', '', 3, '2020-06-12', '2020-06-13', '通过', ' ', '无处理项', '', 0, 0);
 INSERT INTO `tb_usingrecord` VALUES (5, '3182701101', 2, 'G0001', '学习', 1, '2020-06-22', '2020-06-23', '通过', ' ', '待处理', ' ', 0, 0);
 INSERT INTO `tb_usingrecord` VALUES (6, '3182701101', 5, 'G0001', '测试数据', 1, '2020-06-17', '2020-06-18', '待处理', '', '无处理项', '', 0, 0);
 INSERT INTO `tb_usingrecord` VALUES (7, '3182701101', 6, 'G0001', '测试数据', 1, '2020-06-23', '2020-06-24', '通过', NULL, '无处理项', NULL, 0, 0);
@@ -381,36 +367,41 @@ INSERT INTO `tb_usingrecord` VALUES (8, '3182701101', 5, 'G0001', 'xxx', 1, '202
 INSERT INTO `tb_usingrecord` VALUES (9, '3182701101', 3, 'G0001', 'xxx', 1, '2020-09-13', '2020-09-14', '待处理', '', '无处理项', '', 0, 0);
 
 -- ----------------------------
--- Table structure for user_test
+-- Procedure structure for my_test
 -- ----------------------------
-DROP TABLE IF EXISTS `user_test`;
-CREATE TABLE `user_test`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `nickname` varchar(48) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '人间四月天' COMMENT '昵称',
-  `username` varchar(48) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'bluesky' COMMENT '用户名',
-  `password` varchar(48) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'bluesky' COMMENT '密码',
-  `mailbox` varchar(48) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '1234567890@qq.com' COMMENT '电子邮箱',
-  `phone` char(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '12345678901' COMMENT '手机号',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `avatar_url` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'https://cdn.pixabay.com/photo/2020/01/17/07/47/cat-4772436_1280.png' COMMENT '头像链接',
-  `birth` date NULL DEFAULT '2000-01-01' COMMENT '出生年月日',
-  `sex` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'FEMALE' COMMENT '性别：FEMALE|MALE',
-  `state` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'NORMAL' COMMENT '状态：NORMAL|BAN',
-  `salt` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'abc123' COMMENT '加密盐',
-  `level` int(11) NULL DEFAULT 0 COMMENT '用户级别：0-10',
-  `deleted` tinyint(4) NULL DEFAULT 0 COMMENT '是否注销：0|1',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '仅仅只是用于测试的用户表' ROW_FORMAT = Dynamic;
+DROP PROCEDURE IF EXISTS `my_test`;
+delimiter ;;
+CREATE PROCEDURE `my_test`(in param int)
+begin 
+declare var int default 0;
+declare userid varchar(20) default "know";
+if var=0 then 
+set var=20;
+end if;
+if userid="know" then 
+set userid="ok";
+end if;
+select var,userid;
+end
+;;
+delimiter ;
 
 -- ----------------------------
--- Records of user_test
+-- Procedure structure for proc3
 -- ----------------------------
-INSERT INTO `user_test` VALUES (2, '人间四月天', 'user02', 'pw666666', '1234567890@qq.com', '12345678901', '2021-04-26 03:59:45', 'https://cdn.pixabay.com/photo/2020/01/17/07/47/cat-4772436_1280.png', '2000-01-01', 'MALE', 'NORMAL', 'abc123', 3, 0);
-INSERT INTO `user_test` VALUES (3, '人间四月天', 'user03', 'pw666666', '1234567890@qq.com', '12345678901', '2021-04-26 03:59:45', 'https://cdn.pixabay.com/photo/2020/01/17/07/47/cat-4772436_1280.png', '2000-01-01', 'FEMALE', 'NORMAL', 'abc123', 2, 0);
-INSERT INTO `user_test` VALUES (4, '人间四月天', 'user04', 'pw666666', '1234567890@qq.com', '12345678901', '2021-04-26 03:59:45', 'https://cdn.pixabay.com/photo/2020/01/17/07/47/cat-4772436_1280.png', '2000-01-01', 'MALE', 'NORMAL', 'abc123', 5, 0);
-INSERT INTO `user_test` VALUES (5, '人间四月天', 'user05', 'pw666666', '1234567890@qq.com', '12345678901', '2021-04-26 03:59:45', 'https://cdn.pixabay.com/photo/2020/01/17/07/47/cat-4772436_1280.png', '2000-01-01', 'FEMALE', 'NORMAL', 'abc123', 5, 0);
-INSERT INTO `user_test` VALUES (6, '人间四月天', 'user06', 'pw666666', '1234567890@qq.com', '12345678901', '2021-04-26 03:59:45', 'https://cdn.pixabay.com/photo/2020/01/17/07/47/cat-4772436_1280.png', '2000-01-01', 'MALE', 'NORMAL', 'abc123', 5, 0);
-INSERT INTO `user_test` VALUES (12, '人间四月天', 'user01', 'pw666666', '1234567890@qq.com', '12345678901', '2021-04-26 16:22:44', 'https://cdn.pixabay.com/photo/2020/01/17/07/47/cat-4772436_1280.png', '2000-01-01', 'FEMALE', 'NORMAL', 'abc123', 0, 0);
+DROP PROCEDURE IF EXISTS `proc3`;
+delimiter ;;
+CREATE PROCEDURE `proc3`()
+begin 
+declare x1 varchar(10) default "outer";
+begin
+declare x1 varchar(10) default "inner";
+select x1;
+end;
+select x1;
+end
+;;
+delimiter ;
 
 -- ----------------------------
 -- Procedure structure for pro_admdealusi
@@ -458,6 +449,34 @@ if admid!='' then
 	values(user_id,equid,admid,usi_reason,usinumber,usi_date,adddate(usi_date,interval borrowdays day),'待处理');
 	select ROW_COUNT() into result;
 end if;
+end
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_count
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_count`;
+delimiter ;;
+CREATE PROCEDURE `pro_count`()
+BEGIN
+declare i int default 0;
+while i<=10 do 
+set i = i+1;
+end while;
+select i;
+end
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_count1
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_count1`;
+delimiter ;;
+CREATE PROCEDURE `pro_count1`()
+BEGIN
+set @p = 100;
 end
 ;;
 delimiter ;
@@ -606,49 +625,42 @@ end
 delimiter ;
 
 -- ----------------------------
--- Procedure structure for pro_user_test_delete
+-- Procedure structure for pro_temp
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `pro_user_test_delete`;
+DROP PROCEDURE IF EXISTS `pro_temp`;
 delimiter ;;
-CREATE PROCEDURE `pro_user_test_delete`(pusername varchar(48),ppassword varchar(48))
-BEGIN
-delete from user_test where username=pusername and password=ppassword;
-end
+CREATE PROCEDURE `pro_temp`(tname varchar(20))
+begin 
+insert into tb_temp(tname)values(tname);
+END
 ;;
 delimiter ;
 
 -- ----------------------------
--- Procedure structure for pro_user_test_find
+-- Procedure structure for pro_test1
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `pro_user_test_find`;
+DROP PROCEDURE IF EXISTS `pro_test1`;
 delimiter ;;
-CREATE PROCEDURE `pro_user_test_find`(pusername varchar(48),ppassword varchar(48))
-BEGIN
-select * from user_test where username=pusername and password=ppassword limit 0,1;
-end
+CREATE PROCEDURE `pro_test1`()
+select concat(@param,' world')
 ;;
 delimiter ;
 
 -- ----------------------------
--- Procedure structure for pro_user_test_insert
+-- Procedure structure for pro_test2
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `pro_user_test_insert`;
+DROP PROCEDURE IF EXISTS `pro_test2`;
 delimiter ;;
-CREATE PROCEDURE `pro_user_test_insert`(pusername varchar(48),ppassword varchar(48))
+CREATE PROCEDURE `pro_test2`()
 BEGIN
-insert into user_test(username,password)values(pusername,ppassword);
-end
-;;
-delimiter ;
-
--- ----------------------------
--- Procedure structure for pro_user_test_update_password
--- ----------------------------
-DROP PROCEDURE IF EXISTS `pro_user_test_update_password`;
-delimiter ;;
-CREATE PROCEDURE `pro_user_test_update_password`(pusername varchar(48),ppassword varchar(48))
-BEGIN
-update user_test set password=ppassword where username=pusername;
+declare i int default 0;
+label:loop 
+set i=i+1;
+if i>20 then 
+leave label;
+end if;
+end loop;
+select i;
 end
 ;;
 delimiter ;

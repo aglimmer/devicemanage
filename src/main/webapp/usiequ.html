@@ -302,21 +302,20 @@
 			function purchaseRecord(){
 				var ids = document.getElementById("userid2");
 				var usertype = session.getItem("usertype");
-				var urls = "http://127.0.0.1:8080/devicemanage/";
+				var urls = BASE_URL;
 				var obj = {};
 				var userid = ids.value;
 				if(userid==""){
 					userid =session.getItem("userid");
-
 					obj.userid = userid;
 					if(usertype==2){
-						urls +="admpurrecord.do";
+						urls +="/admpurrecord.do";
 					}else{
-						urls += "userpurrecord.do";
+						urls += "/userpurrecord.do";
 					}
 				}else{
 					obj.userid = userid;
-					urls += "userpurrecord.do";
+					urls += "/userpurrecord.do";
 				}
 
 				$.ajax({

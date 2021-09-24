@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:mvc="http://www.springframework.org/schema/mvc"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
            http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/mvc
            http://www.springframework.org/schema/mvc/spring-mvc.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context.xsd">
-<!-- spring-mvc -->
-<!--	<mvc:annotation-driven conversion-service="conversionService">-->
-<!--		<mvc:message-converters register-defaults="true">-->
-<!--			<bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
-<!--				<property name="defaultCharset" value="UTF-8"/>-->
-<!--				<property name="writeAcceptCharset" value="false"/>-->
-<!--			</bean>-->
-<!--		</mvc:message-converters>-->
-<!--	<mvc:annotation-driven />-->
+    <!-- spring-mvc -->
+    <!--	<mvc:annotation-driven conversion-service="conversionService">-->
+    <!--		<mvc:message-converters register-defaults="true">-->
+    <!--			<bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
+    <!--				<property name="defaultCharset" value="UTF-8"/>-->
+    <!--				<property name="writeAcceptCharset" value="false"/>-->
+    <!--			</bean>-->
+    <!--		</mvc:message-converters>-->
+    <!--	<mvc:annotation-driven />-->
 
-<mvc:annotation-driven>
-	<!--配置消息转换器，使用controller返回的字符串如果不是json类型，而是普通文本，那么需要指定返回类型及编码，否则会乱码-->
-	<mvc:message-converters register-defaults="true">
-		<bean class="org.springframework.http.converter.StringHttpMessageConverter">
-			<property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
-		</bean>
-	</mvc:message-converters>
-</mvc:annotation-driven>
+    <mvc:annotation-driven>
+        <!--配置消息转换器，使用controller返回的字符串如果不是json类型，而是普通文本，那么需要指定返回类型及编码，否则会乱码-->
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
-<mvc:interceptors>
-	<!--配置某个拦截器，默认拦截所有-->
-	<!--		<bean class="com.util.LoginInterceptor"/>-->
-	<!--mvc:interceptor配置某个拦截器更详细的信息，path指定拦截的请求-->
-	<mvc:interceptor>
-		<mvc:mapping path="/*.do"/>
-		<bean class="com.util.LoginInterceptor"></bean>
-	</mvc:interceptor>
-</mvc:interceptors>
+    <mvc:interceptors>
+        <!--配置某个拦截器，默认拦截所有-->
+        <!--		<bean class="com.util.LoginInterceptor"/>-->
+        <!--mvc:interceptor配置某个拦截器更详细的信息，path指定拦截的请求-->
+        <mvc:interceptor>
+            <mvc:mapping path="/*.do"/>
+            <bean class="com.util.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
-<context:component-scan base-package="com.cont" />
-<bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-	<property name="prefix" value="/" />
-	<property name="suffix" value=".html" />
-</bean>
+    <context:component-scan base-package="com.cont"/>
+    <bean
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".html"/>
+    </bean>
 </beans>

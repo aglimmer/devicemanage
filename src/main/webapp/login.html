@@ -22,10 +22,8 @@
 	<script src="js/base.js"></script>
 	<script>
 		//全局的BASE_URL，当后端请求的端口或url发生改变时，在这里修改
-		const BASE_URL = "http://localhost:8080/devicemanage";
+		let BASE_URL = "";
 		const session = window.sessionStorage;
-		session.setItem("BASE_URL", BASE_URL);
-
 		// 检查输入信息
 		function varifylogin() {
 			document.getElementById("varifyerror").innerHTML = "";
@@ -128,9 +126,28 @@
 			};
 			req.send();
 		}
-
+		function initBaseUrl(){
+			$.ajax({
+				url: "url.ano",
+				type: "GET",
+				xhrFields: {
+					withCredentials: true
+				},
+				crossDomain: true,
+				success: function (data) {
+					console.log("BASE_URL=",data);
+					session.setItem("BASE_URL",data);
+					BASE_URL = data;
+					document.getElementById("imgvarify").src = BASE_URL + "/imgvarify.ano";
+				},
+				onerror: function (error) {
+					console.log("请求发送失败，无法获取url路径")
+					console.log("error=",error)
+				}
+			});
+		}
 		window.onload = function () {
-			document.getElementById("imgvarify").src = BASE_URL + "/imgvarify.ano";
+			initBaseUrl();
 		}
 	</script>
 </head>
@@ -250,7 +267,7 @@
 																</td>
 																<td height="35" colspan="2" class="top_hui_text"><input
 																		class="editbox4" type="password" size="20"
-																		name="userpw" value="123456"> <img
+																		name="userpw" value="640086"> <img
 																		src="css/skin/luck.gif" width="19" height="18">
 																</td>
 															</tr>

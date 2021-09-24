@@ -1,13 +1,5 @@
 package com.servlets;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Random;
-
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Random;
 //import javax.servlet.jsp.JspFactory;
 //import javax.servlet.jsp.PageContext;
 //import javax.servlet.jsp.tagext.BodyContent;
-
 
 
 /**
@@ -34,7 +29,7 @@ public class ImgvarifyServlet extends HttpServlet {
 	private static final String str = "1234567890" + "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char[] chars = str.toCharArray();// 将字符放在数组中方便随机读取
 	private static Random random = new Random();
-	 
+
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -46,8 +41,9 @@ public class ImgvarifyServlet extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -75,7 +71,7 @@ public class ImgvarifyServlet extends HttpServlet {
 //		graphics.setFont(new Font("", Font.PLAIN, 20));
 		graphics.setFont(new Font("微软雅黑", Font.PLAIN, 18));
 		// 用于记录生成的验证码
-		String safeCode ="";
+		String safeCode = "";
 
 		// 生成验证码并绘制
 		for (int i = 0; i < LENGTH; i++) { // 设置验证码长度
@@ -96,21 +92,21 @@ public class ImgvarifyServlet extends HttpServlet {
 		 * drawOval(int x,int y,int width,int height)：
 		 * 是画用线围成的椭圆形。其中参数x和参数y指定椭圆形左上角的位置，参数width和height是横轴和纵轴。
 		 */
-		
+
 		HttpSession session = request.getSession();
 
 		// 将生成的验证码存入session中，以便进行校验
 //		 if (!request.getSession().isNew()){
 //             session.invalidate();
 //             session = request.getSession(true);
-          //   log.debug("new Session:" + session.getId());
+		//   log.debug("new Session:" + session.getId());
 //         }
 //		保存验证码到会话中
 		session.setAttribute("varifycode", safeCode);
-		System.out.println("varifycode="+session.getAttribute("varifycode"));
+		System.out.println("varifycode=" + session.getAttribute("varifycode"));
 		// 绘制图片
 		graphics.dispose();
-		
+
 		// 将图片输出到response中
 		ImageIO.write(image, "JPEG", response.getOutputStream());
 	}
@@ -118,6 +114,8 @@ public class ImgvarifyServlet extends HttpServlet {
 	private Color getColor() { // 生成随机颜色
 		return new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
 	}
+
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub

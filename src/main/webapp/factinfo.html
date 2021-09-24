@@ -25,7 +25,7 @@
 			
 		</style>
 		<script>
-			var BasePath = "http://localhost:8080/devicemanage/";
+			var BASE_URL = session.getItem("BASE_URL");
 			function fillFact(obj){
 				// var obj = JSON.parse(param);
 				var fact = document.getElementsByName("facinfo");
@@ -44,7 +44,7 @@
 				facid.style.display="block";
 				var obj={id:param};
 				$.ajax({
-					url:BasePath+"factinfo.do",
+					url:BASE_URL+"factinfo.do",
 					data:obj,
 					type:"Get",
 					dataType:"json",
