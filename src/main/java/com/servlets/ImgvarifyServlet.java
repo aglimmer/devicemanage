@@ -77,7 +77,6 @@ public class ImgvarifyServlet extends HttpServlet {
 		for (int i = 0; i < LENGTH; i++) { // 设置验证码长度
 			String c = "" + chars[random.nextInt(str.length())];
 			graphics.setColor(getColor());
-
 			graphics.drawString(c, 10 * i + 10, 18);
 			// 在画布上坐标位置为 10*i+10,18的地方画
 			safeCode += c;

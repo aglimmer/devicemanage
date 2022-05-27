@@ -288,6 +288,10 @@ function searchInfo() {
 		}
 	});
 }
+window.onload=function(){
+	searchInfo();
+}
+
 // 厂家信息呈现到表单
 function fillFact(obj) {
 	// var obj = JSON.parse(param);
