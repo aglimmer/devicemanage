@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/jquery-3.5.0.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<script src="js/base.js"></script>
+		<style type="text/css">
+			body {
+				width: 100%;
+				height: 100%;
+				background-color: #fffcf0;
+				margin: 0;
+			}
+
+			#container {
+				width: 100%;
+				height: 560px;
+				padding: 10px 15px;
+				margin: 10px;
+				background-color: #F2F2F2;
+			}
+
+			div #navbar {
+				height: 48px;
+				width: 100%;
+				background: #33aef0;
+				/* margin:10px; */
+			}
+
+			ul {
+				display: block;
+				list-style-type: none;
+				padding: 0px;
+				margin: 0;
+
+			}
+
+			ul li {
+				float: left;
+			}
+			/* 菜单栏切换 */
+			input.navlab {
+				width: 120px;
+				height: 48px;
+				margin-right: 1px;
+				background-color: #3399FF;
+				text-align: center;
+				color: #ECEEEF;
+				outline: none;
+				border: 0;
+			}
+
+			/* input.navlab:hover {
+				background-color: #0066CC;
+			} */
+
+			input.navlab:active {
+				background-color: #1B80D4;
+			}
+			input.currlab{
+				background-color: #0066CC;
+			}
+
+			div.hide {
+				display: none;
+			}
+
+			#tabview table {
+				margin-top: 10px;
+				width: 96%;
+				/* height:460px; */
+			}
+
+
+
+			.replyview {
+				width: 640px;
+				height: 480px;
+				position: absolute;
+				display: none;
+				color: #333333;
+				z-index: 100;
+				left: 50%;
+				top: 50%;
+				margin-left: -320px;
+				margin-top: -210px;
+				background-color: #9ad3f2;
+				padding: 18px 15px;
+				color: #333333;
+				font-size: 16px;
+			}
+
+
+			.replyview table {
+				width: 100%;
+				/* margin: 0 auto; */
+				margin-left: 18px;
+				margin-top: 10px;
+			}
+
+			.replyview table tr {
+				height: 42px;
+			}
+			select{
+				width:165px;
+				height:24px;
+				font-size:16px;
+			}
+			/* 故障问题反馈 */
+			.faultview {
+				position: absolute;
+				margin-top:-170px;
+				width: 100%;
+				height: 600px;
+				display: none;
+				padding: 4px 4px;
+				/* margin: 10px; */
+				background-color: #C8E6E8;
+			}
+		</style>
+		<script>
+			var session = window.sessionStorage;
+			// 使用申请记录搜索框
+			var BASE_URL = session.getItem("BASE_URL");
+			
+				function usiRecordInfo(){
+					var obj = {};
+					var userid = document.getElementById("userid");
+					if(userid.value==""){
+						messagePop("输入不能为空!");
+						userid.focus();
+						return;
+					}
+					obj.user_id = userid.value;
+					obj.start = 0;
+					obj.size = 10;
+					usiRecord(obj);
+				}
+				// 打开即加载使用详情
+				window.onload=function (){
+
+					var usertype = session.getItem("usertype");
+					// messagePop(usertype);
+					
+					if(usertype==null || usertype=="null"){
+						messagePop("请登录后进行操作");
+						return;
+					}
+					var obj = {};
+					obj.user_id=session.getItem("userid");
+					obj.start = 0;
+					obj.size = 10;
+					usiRecord(obj);
+				}
+				function usiRecord(obj){
+					$.ajax({
+						url: BASE_URL+"/usirecord.do",
+						data: obj,
+						type: "GET",
+						dataType: "json",
+						success: function(data) {
+							getUsingRecord(data);
+						}
+					});
+					}
+				
+				// 设备记录返回结果
+				function getUsingRecord(result){
+					var tabview = document.getElementById("tabview");
+					var res ="";
+					if(result.length==0){
+						res +="未找到相应记录！";
+						tabview.innerHTML=res;
+						return;
+					}
+					var headline = ["usi_id","equ_id","equ_name","usi_number","usi_date","usi_returndate","usi_applystatus","adm_feedbackapply","usi_returnstatus","adm_feedbackreturn"];
+					var headinfo = ["序列号","设备编号","设备名称","申请数量","提交时间","归还期限","申请状态","申请提示","归还状态","归还提示","操作"];
+					res +="<table class=\"contab\">";
+					// 表头
+					res +="<tr>";
+					for(var i=0;i<headinfo.length;i++){
+						res +="<th>"+headinfo[i]+"</th>";
+					}
+					res +="</tr>";
+					// 内容
+					var param = "";
+					for(var i=0;i<result.length;i++){
+						var item = result[i];
+						param = JSON.stringify(item).replace(/"/g, '&quot;');
+						// 每一行
+						res +="<tr>";
+						for(var j=0;j<headline.length;j++){
+							if(item[headline[j]]==""){
+								res += "<td>--</td>";
+								continue;
+							}
+							res +="<td>"+item[headline[j]]+"</td>";
+						}
+						res +="<td align=\"center\"><input type=\"button\" class=\"btnbase\" onclick=\"delUsi(\'"+param+"\')\" value=\"删除\">";
+						//管理员操作
+						if(session.getItem("usertype")==2){
+							res +="<input type=\"button\" class=\"btnbase\" onclick=\"replyinfo(\'"+param+"\')\" value=\"回复\">";
+						}else{
+							//只有借出使用才可以反映设备问题和归还设备
+							var disabled="disabled";
+							if(item["usi_applystatus"]=="通过"){
+								disabled = "";
+							}
+							res +="&nbsp;<input type=\"button\" "+disabled+" class=\"btnbase\" onclick=\"faultInfo(\'"+param+"\')\" value=\"问题\">";
+							res +="&nbsp;<input type=\"button\" "+disabled+" class=\"btnbase\" onclick=\"giveBack(\'"+param+"\')\" value=\"归还\">";
+						//}
+						
+						}
+						
+						res += "</td>";
+						res +="</tr>";
+					}
+					//res +="<h3>用户名："+result[0].user_id+"</h3>";
+					//res += "<h3>当前记录："+result.length+"</h3>";
+					//res +="<hr>";
+					res += "</div>";
+					document.getElementById("tabview").innerHTML=res;
+				}
+				
+				
+			// 切换使用详情和购买详情
+			function applyTab(param){
+				var firsttab = document.getElementById("firsttab");
+				var secondtab = document.getElementById("secondtab");
+				var ob = document.getElementsByClassName("navlab");
+				ob[param].className = "navlab currlab";
+				if(param==0){
+					ob[param+1].className = "navlab";
+					firsttab.style.display="block";
+					secondtab.style.display = "none";
+				}else{
+					ob[param-1].className = "navlab";
+					firsttab.style.display="none";
+					secondtab.style.display = "block";
+					// purchaseInfo();
+					purchaseRecord();
+				}
+			}
+			
+			
+			// 保存使用申请的回复
+			function saveInfo(){
+				var heads = ["usi_id","user_id","equ_id","equ_name","usi_reason","usi_number","usi_date","usi_returndate","usi_applystatus","adm_feedbackapply","usi_returnstatus","adm_feedbackreturn"];
+				// var infos = ["系列号","用户名","设备编号","设备名称","申请说明","申请数量","申请日期","归还日期","申请处理","申请提示","归还处理","归还提示"];
+				var infos = document.getElementsByName("infos");
+				var obj = {};
+				for(var i=0;i<heads.length;i++){
+					if(infos[i].value)
+					obj[heads[i]]=infos[i].value;
+				}
+				// {usi_id},#{equ_id},#{usi_number},#{usi_applystatus},#{adm_feedbackapply},#{usi_returnstatus},#{adm_feedbackreturn}
+				// alert(JSON.stringify(obj));
+				$.ajax({
+					url: BASE_URL+"/dealusi.do",
+					data: obj,
+					type: "GET",
+					dataType: "json",
+					success: function(data) {
+						if(data==1){
+							messagePop("处理成功");
+						}else{
+							messagePop("处理失败");
+						}
+						cancleInfo();
+					}
+				});
+			}
+			// 关闭使用申请区
+			function cancleInfo(){
+				document.getElementsByClassName("replyview")[0].style.display="none";
+			}
+			function cancleInfo2(){
+				document.getElementsByClassName("replyview")[1].style.display="none";
+			}
+			// 打开使用处理窗口
+			function replyinfo(ss){
+				document.getElementsByClassName("replyview")[0].style.display="block";
+				// var ss="{\"usi_id\":2,\"user_id\":\"3182701101\",\"equ_id\":1,\"adm_id\":\"G0001\",\"usi_reason\":\"学习实验\",\"usi_number\":\"1\",\"usi_date\":\"2020-06-14\",\"usi_returndate\":\"2020-06-28\",\"usi_applystatus\":\"待处理\",\"adm_feedbackapply\":\"\",\"usi_returnstatus\":\"无处理项\",\"adm_feedbackreturn\":\"\",\"user_del\":0,\"adm_del\":0,\"equ_name\":\"多媒体教师主控台\"}";
+				var obj = JSON.parse(ss);
+				var heads = ["usi_id","user_id","equ_id","equ_name","usi_reason","usi_number","usi_date","usi_returndate","usi_applystatus","adm_feedbackapply","usi_returnstatus","adm_feedbackreturn"];
+				// var infos = ["系列号","用户名","设备编号","设备名称","申请说明","申请数量","申请日期","归还日期","申请处理","申请提示","归还处理","归还提示"];
+				var infos = document.getElementsByName("infos");
+				for(var i=0;i<infos.length;i++){
+					infos[i].value=obj[heads[i]];
+					if(infos[i].value=="无处理项"){
+						infos[i].disabled="false";
+					}
+				}
+				
+				// document.getElementById("replyview").innerText=res;
+				// document.write(JSON.stringify(heads));
+			}
+			// 查询购买申请记录
+			function purchaseRecord(){
+				var ids = document.getElementById("userid2");
+				var usertype = session.getItem("usertype");
+				var urls = BASE_URL;
+				var obj = {};
+				var userid = ids.value;
+				if(userid==""){
+					userid =session.getItem("userid");
+					obj.userid = userid;
+					if(usertype==2){
+						urls +="/admpurrecord.do";
+					}else{
+						urls += "/userpurrecord.do";
+					}
+				}else{
+					obj.userid = userid;
+					urls += "/userpurrecord.do";
+				}
+
+				$.ajax({
+					url: urls,
+					data: obj,
+					type: "GET",
+					dataType: "json",
+					success: function(data) {
+						purchaseInfo(data);
+					}
+				});
+				}
+				
+			// 购买申请回调函数
+			function purchaseInfo(obj){
+				// var ss = "[{\"pur_applyreason\":\"教务处设备老化短缺，无法正常工作\",\"pur_applydate\":\"六月 1, 2020\",\"user_id\":\"3182701101\",\"adm_reply\":\"\",\"pur_id\":1,\"adm_dealstatus\":\"待处理\",\"pur_purchasenumber\":1,\"pur_price\":2000.0,\"equ_name\":\"打字机\"},{\"pur_applyreason\":\"设备故障，无法正常工作\",\"pur_applydate\":\"六月 1, 2020\",\"user_id\":\"3182701101\",\"adm_reply\":\"\",\"pur_id\":2,\"adm_dealstatus\":\"待处理\",\"pur_purchasenumber\":1,\"pur_price\":2000.0,\"equ_name\":\"联想电脑\"}]";
+				if(obj.length==0){
+					messagePop("没有相关记录");
+					return;
+				}
+				// var obj = JSON.parse(ss);
+				var usertype = window.sessionStorage.getItem("usertype");
+				var heads = ["pur_id","user_id" ,"equ_name","pur_applyreason","pur_purchasenumber","pur_price","pur_applydate","adm_dealstatus","adm_reply"];
+				var infos = ["序列号","用户ID","设备名","申请说明","购买数量","预计单价","申请日期","申请进度","通知信息","操作"];
+				obj.a = infos;
+				var res = "<table style=\"margin-top: 10px;	width: 96%;\" class=\"contab\">";
+				res += "<tr>";
+				for(var k=0;k<infos.length;k++){
+					res += "<th>"+infos[k]+"</th>";
+				}
+				res += "</tr>";
+				var param = "";
+				for(var i=0;i<obj.length;i++){
+					var item = obj[i];
+					param = JSON.stringify(item).replace(/"/g, '&quot;');
+					res += "<tr>";
+					for(var j=0;j<heads.length;j++){
+						res += "<td>";
+						res += item[heads[j]];
+						res += "</td>";
+					}
+					res += "<td align=\"center\">";
+					res +="<input type=\"button\" class=\"btnbase\" onclick=\"delPurchase(\'"+param+"\')\" value=\"删除\">";
+					if(usertype==2){
+						res += "<input type=\"button\" class=\"btnbase\" onclick=\"dealPurchase(\'"+param+"\')\" value=\"回复\">";
+					}
+					res +="</td>";
+					res += "</tr>";
+				}
+				res +="</table>";
+				document.getElementById("purtab").innerHTML = res;
+			}
+			// 删除购买申请
+			function delPurchase(data){
+				var r = confirm("确定删除吗？");
+				if (r == false) {
+				    return;
+				} 
+			}
+			function delUsi(data){
+				var usertype = session.getItem("usertype");
+				if(usertype==null){
+					messagePop("请登录再进行操作");
+					return;
+				}
+				var r = confirm("确定删除吗？");
+				if (r == false) {
+				    return;
+				}
+				
+				var p = JSON.parse(data);
+				var obj = {};
+				obj.user_type = usertype;
+				obj.usi_id = p.usi_id;
+				$.ajax({
+					url: BASE_URL+"/delusingrecord.do",
+					data: obj,
+					type: "GET",
+					dataType: "json",
+					success: function(data) {
+						if(data==1){
+							messagePop("删除成功");
+						}else{
+							messagePop("删除失败");
+						}
+						cancleInfo2();
+							
+					}
+				});
+				
+			}
+			// 购买申请处理
+			function dealPurchase(data){
+				var obj = JSON.parse(data);
+				document.getElementsByClassName("replyview")[1].style.display="block";
+				var heads = ["user_id" ,"equ_name","pur_applyreason","pur_purchasenumber","pur_price","pur_applydate","adm_dealstatus","adm_reply","pur_id"];
+				var elem = document.getElementsByName("purchase");
+				for(var i=0;i<elem.length;i++){
+					elem[i].value = obj[heads[i]];
+				}
+			}
+			// 保存购买请求的处理信息
+			function savePurchase(){
+				document.getElementsByClassName("replyview")[1].style.display="block";
+				var heads = ["user_id" ,"equ_name","pur_applyreason","pur_purchasenumber","pur_price","pur_applydate","adm_dealstatus","adm_reply","pur_id"];
+				var obj = {};
+				var elem = document.getElementsByName("purchase");
+				for(var i=0;i<elem.length;i++){
+					obj[heads[i]] = elem[i].value;
+					if(heads[i]=="adm_dealstatus" && elem[i].value==""){
+						elem[i].focus();
+						messagePop("输入不能为空");
+						return;
+					}
+				}
+				$.ajax({
+					url: BASE_URL+"/savepurchase.do",
+					data: obj,
+					type: "GET",
+					dataType: "json",
+					success: function(data) {
+						if(data==1){
+							messagePop("保存成功");
+						}else{
+							messagePop("处理失败");
+						}
+						cancleInfo2();
+							
+					}
+				});
+			}
+			// 设备故障反馈
+			var img="";
+			function selectImg(source) {
+			    var file = source.files[0]; 
+			    if(window.FileReader) { 
+			        var fr = new FileReader(); 
+			        fr.onloadend = function(e) { 
+						// 通过img属性src设置显示区
+			            document.getElementById("imgview").src = e.target.result; 
+						// img 作为传输到服务器的参数
+						img = e.target.result;
+					}; 
+					// 该方法将文件读取为一段以 data: 开头的字符串，
+					// 这段字符串的实质就是 Data URL，Data URL是一种将小文件直接嵌入文档的方案
+					// 通过fr用于把图片显示出来
+			        fr.readAsDataURL(file); 
+			    } 
+			} 
+			// 设备故障反馈
+			// 填充信息到表单
+			function faultInfo(param){
+				var faultview = document.getElementsByClassName("faultview");
+				faultview[0].style.display="block";
+				var param = JSON.parse(param);
+				// param = {"usi_id":4,"user_id":"3182701101","equ_id":2,"adm_id":"G0001","usi_reason":"","usi_number":"3","usi_date":"2020-06-12","usi_returndate":"2020-06-13","usi_applystatus":"通过","adm_feedbackapply":"","usi_returnstatus":"无处理项","adm_feedbackreturn":"","user_del":0,"adm_del":0,"equ_name":"学生实验桌"};
+				var ob = document.getElementsByName("equfault");
+				ob[0].value= param.equ_id;
+				ob[1].value= param.user_id;
+				// -- 设备问题信息表：问题编号（主键）、管理员编号（关联）、设备编号（关联）、用户名（关联）、
+				// -- 发生时间、发生地点、问题详情、上传图片（保存图片路径）、
+				// -- 管理员消息(nodeal、deal)、处理结果（nosolve、wait、solve）、回复内容（有没有解决的原因）
+				
+			}
+			//归还设备
+			function giveBack(param){     
+				var param = JSON.parse(param);
+				var req = new XMLHttpRequest();
+				var url = BASE_URL+"/giveback.do?usi_id="+param.usi_id;
+				req.open("GET",url,true);
+				req.onload=function(){
+					var res = "请求提交成功！";
+					if(req.response!="1"){
+						res = "提交处理失败！";
+					}
+					messagePop(res);
+				}
+				req.onerror=function(){
+					messagePop("处理时发生错误");
+				}
+				req.withCredentials = true;
+				req.send();
+				
+			}
+			
+			// 设备故障反馈
+			function faultSend(num){
+				if(num==2){
+					var faultview = document.getElementsByClassName("faultview");
+					faultview[0].style.display="none";
+					return;
+				}
+				var ob = document.getElementsByName("equfault");
+				var param = {};
+				// adm_id,equ_id,user_id,fau_occurdate,fau_occurposition,fau_detail,fau_img
+				var info = ["equ_id","user_id","fau_detail","fau_occurdate","fau_occurposition"];
+				for(var i=0;i<ob.length;i++){
+					param[info[i]] = ob[i].value;
+					if(ob[i].value==""){
+						messagePop("信息不能为空");
+						return ob[i].focus();
+					}
+				}
+				param["fau_img"] = img;
+				// alert(JSON.stringify(param));
+				$.ajax({
+					url: BASE_URL+"/faultup.do",
+					data:param,
+					// 传递的是图片文件，这里不能用GET方法
+					type: "POST",
+					dataType: "json",
+					xhrFields: {
+					    withCredentials: true
+					},
+					crossDomain: true,
+					success: function(data) {
+						
+						var faultview = document.getElementsByClassName("faultview");
+						faultview[0].style.display="none";
+						if(data==1){
+							messagePop("提交成功");
+						}else{
+							messagePop("提交失败");
+						}
+						
+						// alert(data);
+					},
+					error:function(msg){
+						// msg为json对象
+						document.write(JSON.stringify(msg));
+					},
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<div id="container">
+			<!-- 面板切换 -->
+			<div id="navbar">
+				<ul>
+					<li><input type="button" class="navlab" value="使用详情" onclick="applyTab(0)"></li>
+					<li><input type="button" class="navlab" value="购买详情" onclick="applyTab(1)"></li>
+				</ul>
+
+			</div>
+			<div id="firsttab">
+				<!-- 搜索条 -->
+				<div class="searchbar" style="margin-top: 10px;">
+					<input type="text" placeholder="用户名" id="userid">
+					<input type="button" class="btnbase" onclick="usiRecordInfo()" value="查找">
+				</div>
+				<!-- 使用申请的查询显示区 -->
+				<div id="tabview">
+				</div>
+				<!-- 使用申请回复弹出区 -->
+				<div class="replyview">
+					<label style="margin-left: 18px;">使用申请处理</label>
+					<hr>
+					<table>
+						<tr>
+							<td>系列号</td>
+							<td><input type="text" disabled="disabled" name="infos"></td>
+							<td>用户名</td>
+							<td><input type="text" disabled="disabled" name="infos"></td>
+						</tr>
+						<tr>
+							<td>设备编号</td>
+							<td><input type="text" disabled="disabled" name="infos"></td>
+							<td>设备名称</td>
+							<td><input type="text" disabled="disabled" name="infos"></td>
+						</tr>
+						<tr>
+							<td>申请说明</td>
+							<td><input type="text" disabled="disabled" name="infos"></td>
+							<td>申请数量</td>
+							<td><input type="text" disabled="disabled" name="infos"></td>
+						</tr>
+						<tr>
+							<td>申请日期</td>
+							<td><input type="text" disabled="disabled" name="infos"></td>
+							<td>归还日期</td>
+							<td><input type="text" disabled="disabled" name="infos"></td>
+						</tr>
+						<tr>
+							<td>申请处理</td>
+							<td>
+								<select name="infos">
+									<option value="通过">通过</option>
+									<option value="未通过" slected>不通过</option>
+								</select>
+							</td>
+							<td>申请提示</td>
+							<td><textarea placeholder="选填" rows="3" cols="22" name="infos" style="resize:none"></textarea></td>
+						</tr>
+						<tr>
+							<td>归还处理</td>
+							<td>
+								<select name="infos">
+									<option value="通过">通过</option>
+									<option value="未通过">不通过</option>
+									<option value="无处理项" selected>无处理项</option>
+								</select>
+							</td>
+							<td>归还提示</td>
+							<td><textarea placeholder="选填" rows="3" cols="22" name="infos" style="resize:none"></textarea></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<input type="button" class="btnbase" onclick="saveInfo()" value="保存">
+							</td>
+							<td align="center" colspan="2">
+								<input type="button" class="btnbase" onclick="cancleInfo()" value="取消">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<!-- 购买申请记录 -->
+			<div id="secondtab" style="display: none;">
+				<!-- 搜索条 -->
+				<div class="searchbar" style="margin-top: 10px;">
+					<input type="text" placeholder="用户名" id="userid2">
+					<input type="button" class="btnbase" onclick="purchaseRecord()" value="查找">
+				</div>
+				<!-- 查询结果表格 -->
+				<div id="purtab">
+				</div>
+				<!-- 购买回复弹框 -->
+				<div class="replyview">
+					<label style="margin-left: 18px;">购买申请处理</label>
+					<hr>
+					<table>
+						<tr>
+							<td>申请人ID：</td>
+							<td><input type="text" disabled="disabled" name="purchase"></td>
+							<td>设备名：</td>
+							<td><input type="text" disabled="disabled" name="purchase"></td>
+						</tr>
+						<tr>
+							<td colspan="4">申请说明：</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<textarea name="purchase" style="resize:none; width: 92%;" disabled="disabled" cols="60" rows="4"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>购买数量：</td>
+							<td><input type="text" disabled="disabled" name="purchase"></td>
+							<td>预计单价：</td>
+							<td><input type="text" disabled="disabled" name="purchase"></td>
+						</tr>
+						<tr>
+							<td>申请日期：</td>
+							<td><input type="text" disabled="disabled" name="purchase"></td>
+							<td>处理结果：</td>
+							<td>
+								<select name="purchase" >
+									<option value="通过">通过</option>
+									<option value="未通过" slected>不通过</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">回复消息：</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<textarea name="purchase" style="resize:none; width: 92%;" rows="4"></textarea>
+							</td>
+						</tr>
+						<tr style="display: none;">
+							<td colspan="4"><input type="text" name="purchase"></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<input type="button" class="btnbase" onclick="savePurchase()" value="保存">
+							</td>
+							<td colspan="2" align="center">
+								<input type="button" class="btnbase" onclick="cancleInfo2()" value="取消">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<!-- 设备信息反馈 -->
+			<div class="faultview">
+				<div style="height:32px;line-height:32px;padding-left: 3px; font-weight: bolder;color:white;background-color: #0193DE;">设备故障反映</div>
+				<table style="padding:8px;width:80%;height:564px;background-color: #BBDDF8;">
+					<tr>
+						<td>设备编号</td>
+						<td><input type="text" disabled name="equfault"></td>
+					</tr>
+					<tr style="display:none">
+						<td>用户名</td>
+						<td><input type="text" name="equfault"></td>
+					</tr>
+					<tr>
+						<td colspan="2">请描述关于该设备在使用过程中发现的异常问题？</td>
+						<!-- ["equ_id","user_id", -->
+					</tr>
+					<tr>
+						<td colspan="2"><textarea name="equfault" cols="65" rows="4"></textarea></td>
+					</tr>
+					<tr>
+						<td>异常发生时间</td>
+						<td><input type="date" name="equfault"></td>
+					</tr>
+					<tr>
+						<td>异常发生地点</td>
+						<td><input type="text" name="equfault"></td>
+					</tr>
+					<tr>
+						<td>上传图片</td>
+						<!-- <form action="faultup" -->
+						<!-- <form action="Upload" enctype="multipart/form-data" method ="post" > -->
+						<td>
+							<input type="file" name="file" class="basebtn" onchange="selectImg(this)" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<img id="imgview" src="" alt="无图片" width="480" height="320">
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+						<input type="button" class="btnbase" onclick="faultSend(1)" value="提交"/>
+						</td>
+						<td>
+							<input type="button" class="btnbase" onclick="faultSend(2)" value="取消"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache" content="no-cache">
+
+	<title>登陆</title>
+	<style type="text/css">
+		body {
+			margin: 0px;
+			background-color: #1D3647;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="css/base.css" />
+	<link href="css/skin.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="ajax/AjaxRequest.js"></script>
+	<script src="js/jquery-3.5.0.min.js"></script>
+	<script src="js/base.js"></script>
+	<script>
+		//全局的BASE_URL，当后端请求的端口或url发生改变时，在这里修改
+		let BASE_URL = "";
+		const session = window.sessionStorage;
+		// 检查输入信息
+		function varifylogin() {
+			document.getElementById("varifyerror").innerHTML = "";
+			document.getElementById("logintip").innerHTML = "";
+			var obj = document.forms["login"];
+			var userid = obj.userid;
+			var userpw = obj.userpw;
+			var usertype = document.getElementById("typeid");
+
+			// 保存用户信息,作为登录凭证
+			session.setItem("userid", userid.value);
+			session.setItem("userpw", userpw.value);
+			if (usertype.value == "学生" || usertype.value == "老师") {
+				session.setItem("usertype", 1);
+			} else {
+				session.setItem("usertype", 2);
+			}
+
+
+			var varifycode = document.getElementById("varifycode");
+			if (userid.value == "" || userpw.value == "") {
+				document.getElementById("logintip").innerHTML = "用户名或密码不能为空";
+				userid.focus();
+				return false;
+			}
+			//验证码是否为空
+			if (varifycode.value == "") {
+				document.getElementById("varifyerror").innerHTML = "验证码不能为空";
+				varifycode.focus();
+				return false;
+			}
+			// 检查验证码
+			// 参数：4位验证码
+			checkCode(varifycode.value);
+		}
+
+		// 检查用户密码
+		// 参数：4位验证码
+		function checkUser(param) {
+
+			const uTypes = document.getElementById("typeid").value;
+			const purl = encodeURI(BASE_URL + "/login.ano?userid=" + session.getItem("userid") + "&userpw="
+				+ session.getItem("userpw") + "&usertype=" + uTypes + "&varifycode=" + param);
+			$.ajax({
+				url: purl,
+				type: "GET",
+				xhrFields: {
+					withCredentials: true
+				},
+				crossDomain: true,
+				success: function (data) {
+					if (data != "success") {
+						if (data == "error1") {
+							document.getElementById("varifyerror").innerHTML = "验证码错误";
+						} else {
+							document.getElementById("logintip").innerHTML = "用户名、密码或类型错误";
+						}
+					} else {
+						window.open("index.html");
+					}
+				},
+				onerror: function () {
+					alert("error");
+				}
+			});
+		}
+
+		//验证码检查
+		function checkCode(param) {
+			const url = BASE_URL + "/checkdeal.ano?security=" + param;
+			const xhr = new XMLHttpRequest();
+			xhr.open("GET", url, true);
+			xhr.withCredentials = true;
+			xhr.onload = function () {
+				if (xhr.response != "success") {
+					document.getElementById("varifyerror").innerHTML = "验证码错误";
+				} else {
+					// 检查用户名
+					checkUser(param);
+				}
+			};
+			xhr.onerror = function () {
+				alert("请求错误！");
+			};
+			xhr.send();
+		}
+
+		// 刷新验证码
+		function refresh() {
+			//url请求路径、onload回调函数、onerror错误处理函数、method为post或get、params为传递的参数
+			var url = BASE_URL + "/imgvarify.ano";
+			var req = new XMLHttpRequest();
+			req.open("GET", url, true);
+			req.onload = function () {
+				var codeImg = document.getElementById("imgvarify");
+				codeImg.src += "?nocache=" + new Date().getTime();
+			}
+			req.withCredentials = true;
+			req.onerror = function () {
+			};
+			req.send();
+		}
+		function initBaseUrl(){
+			$.ajax({
+				url: "url.ano",
+				type: "GET",
+				xhrFields: {
+					withCredentials: true
+				},
+				crossDomain: true,
+				success: function (data) {
+					console.log("BASE_URL=",data);
+					session.setItem("BASE_URL",data);
+					BASE_URL = data;
+					document.getElementById("imgvarify").src = BASE_URL + "/imgvarify.ano";
+				},
+				onerror: function (error) {
+					console.log("请求发送失败，无法获取url路径")
+					console.log("error=",error)
+				}
+			});
+		}
+		window.onload = function () {
+			initBaseUrl();
+		}
+	</script>
+</head>
+
+<body>
+	<table width="100%" height="166" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td height="42" valign="top">
+				<table width="100%" height="42" border="0" cellpadding="0" cellspacing="0" class="login_top_bg">
+					<tr>
+						<td width="1%" height="21">&nbsp;</td>
+						<td height="42">&nbsp;</td>
+						<td width="17%">&nbsp;</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">
+				<table width="100%" height="532" border="0" cellpadding="0" cellspacing="0" class="login_bg">
+					<tr>
+						<td width="49%" align="right">
+							<table width="91%" height="532" border="0" cellpadding="0" cellspacing="0"
+								class="login_bg2">
+								<tr>
+									<td height="138" valign="top">
+										<table width="89%" height="427px" border="0" cellpadding="0" cellspacing="0">
+											<tr>
+												<td height="60px">&nbsp;</td>
+											</tr>
+											<tr>
+												<!-- 系统图标 -->
+												<td align="left" height="80" valign="top">
+													<img src="css/skin/logo.png" style="border:0" width="320px"
+														height="78">
+												</td>
+											</tr>
+											<tr>
+												<td align="center" height="198px" width="279px" align="right"
+													valign="top">
+													<table width="100%" style="border:0;padding: 14px;" cellpadding="0"
+														cellspacing="0">
+														<tr>
+
+															<td colspan="2" class="left_txt">
+																<p>1- 实验室设备综合管理的首选方案,提供快速设备购买、添加、修理、报废登记等分类管理功能...</p>
+															</td>
+														</tr>
+														<tr>
+															<td colspan="2" class="left_txt">
+																<p>2- 查找设备方式灵活多样，提供你满意的查询功能...</p>
+															</td>
+														</tr>
+														<tr>
+
+															<td colspan="2" class="left_txt">
+																<p>3- 针对用户和管理员的具有不同的操作权限和功能，满足不同角色的所需要的功能，足够安全的登录验证...
+																</p>
+															</td>
+														</tr>
+														<tr>
+
+															<td colspan="2" class="left_txt">
+																<p>4- 提供及时方便的问题或意见建议反馈渠道，设备使用问题及时得到解决...</p>
+															</td>
+														</tr>
+														<tr>
+
+															<td width="30%" height="40"><img
+																	src="css/skin/icon-demo.gif" width="16"
+																	height="16"><a href="welcome.html" target="_blank"
+																	class="left_txt3"> 功能说明</a></td>
+															<td width="35%"><img src="css/skin/icon-login-seaver.gif"
+																	width="16" height="16"><a href="#"
+																	class="left_txt3">
+																	服务电话0874-2881</a></td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+							</table>
+						</td>
+						<td width="1%">&nbsp;</td>
+						<td width="50%" valign="bottom">
+							<table width="100%" height="59" border="0" align="center" cellpadding="0" cellspacing="0">
+								<tr>
+									<td width="2%">&nbsp;</td>
+									<td width="96%" height="38"><span class="login_txt_bt"
+											style="font-weight: bold;">系统登录</span></td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td height="21">
+										<table cellSpacing="0" cellPadding="0" width="100%" border="0" id="table211"
+											height="328">
+											<tr>
+												<td height="164" colspan="2" align="middle">
+													<form name="login" action="" method="post">
+														<table cellSpacing="0" cellPadding="0" width="100%" border="0"
+															height="143" id="table212">
+															<tr>
+																<!-- 用户名 -->
+																<td width="13%" height="38" class="top_hui_text"><span
+																		class="login_txt">用户名：&nbsp;&nbsp; </span></td>
+																<td height="38" colspan="2" class="top_hui_text"><input
+																		type="text" name="userid" class="editbox4"
+																		size="20" value="3182701101"></td>
+															</tr>
+															<!-- 密码 -->
+															<tr>
+																<td width="13%" height="35" class="top_hui_text"><span
+																		class="login_txt"> 密 码： &nbsp;&nbsp; </span>
+																</td>
+																<td height="35" colspan="2" class="top_hui_text"><input
+																		class="editbox4" type="password" size="20"
+																		name="userpw" value="640086"> <img
+																		src="css/skin/luck.gif" width="19" height="18">
+																</td>
+															</tr>
+															<!-- 用户类型 -->
+															<tr>
+																<td width="13%" height="35"><span
+																		class="login_txt">用户类型：</span></td>
+																<td height="35" colspan="2" class="top_hui_text"><select
+																		name="usertype" id="typeid">
+																		<option value="学生">学生</option>
+																		<option value="老师">老师</option>
+																		<option value="管理员">管理员</option>
+																	</select></td>
+															</tr>
+															<!-- 验证码 -->
+															<tr>
+																<td width="13%" height="35"><span
+																		class="login_txt">验证码：</span></td>
+																<td height="35" colspan="2" class="top_hui_text"><input
+																		class="wenbenkuang" name="verifycode"
+																		id="varifycode" type="text" value=""
+																		maxLength="4" size="10">
+																	<!-- <span class="login_txt"> --> <img
+																		id="imgvarify"
+																		style="height:24px; margin-bottom:-7px;" src=""
+																		onclick="refresh()">
+																	</span> <span id="varifyerror" style="color: red">
+																		<!-- </span> -->
+																</td>
+															</tr>
+															<tr>
+																<td height="35">&nbsp;</td>
+																<!-- 提交请求 -->
+																<td width="20%" height="35"><input name="Submit"
+																		type="button" class="button btnbase" id="Submit"
+																		onclick="varifylogin()" value="登 陆"></td>
+																<!-- 重置 -->
+																<td width="67%" class="top_hui_text"><input name="cs"
+																		type="button" class="button btnbase"
+																		onclick="javascript:reset()" id="cs" value="取 消"
+																		onClick="">&nbsp;&nbsp;&nbsp;&nbsp;
+																	<span id="logintip" style="color: red"></span>
+																</td>
+															</tr>
+														</table>
+														<br>
+													</form>
+												</td>
+											</tr>
+											<tr>
+												<td width="433" height="164" align="right" valign="bottom"><img
+														src="css/skin/login-wel.gif" width="242" height="138"></td>
+												<td width="57" align="right" valign="bottom">&nbsp;</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="20">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="login-buttom-bg">
+					<tr>
+						<td align="center"><span class="login-buttom-txt">Copyright
+								&copy; 2020-2025 www.devicemanage.com</span></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
+
+</html>

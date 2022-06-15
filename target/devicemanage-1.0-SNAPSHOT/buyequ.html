@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="js/jquery-3.5.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/base.css"/>
+    <script src="js/base.js"></script>
+    <style>
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #EFFAFF;
+        }
+
+        input[type="text"] {
+            width: 150px;
+            display: block;
+            margin-bottom: 10px;
+            background-color: whitesmoke;
+            font-family: Verdana, Arial;
+        }
+
+        #maindiv {
+            width: 100%;
+            height: 100%;
+            margin: 18px auto;
+            padding: 0 18px;
+            /* background-color: #F2F2F2; */
+        }
+
+        #content {
+            margin-top: 10px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+        }
+
+        table {
+            width: 560px;
+            heigth: 480px;
+            border-collapse: collapse;
+            padding: 0;
+            background-color: #F2F2F2;
+            /* border:1px solid #000000; */
+        }
+
+        table td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #a9c6c9;
+        }
+    </style>
+    <script>
+        var BASE_URL = window.sessionStorage.getItem("BASE_URL");
+        var session = window.sessionStorage;
+
+        function buyApplyPrint() {
+            var userid = session.getItem("userid");
+            if (userid == null) {
+                messagePop("请登录后再进行操作");
+                return;
+            }
+            var res = "";
+            var specinfo = "<pr>申请购买要求：<br><br> 1.设备功能与实验学习相关！<br><br>";
+            specinfo += "2.已有设备因故障或其他问题无法继续使用！<br><br>";
+            specinfo += "3.过于老旧设备,无法满足学习实验等需求的！<br>";
+            var headline = ["用户ID：", "设备名称：", "购买数量：", "预期单价："];
+            res += "<table>";
+            var info = "";
+            for (var i = 0; i < headline.length; i++) {
+                res += "<tr>";
+                res += "<td>" + headline[i] + "</td>";
+
+                if (i == 0) {
+                    res += "<td><input type=\"text\" name=\"apply\" value=\"" + userid + "\" disabled id=\"info" + i + "\"></td>";
+                    continue;
+                }
+                if (i == 2 || i == 3) {
+                    res += "<td><input type=\"number\" min=\"1\" name=\"apply\" id=\"info" + i + "\"></td>";
+                } else {
+                    res += "<td><input type=\"text\" name=\"apply\" id=\"info" + i + "\"></td>";
+                }
+                res += "</tr>";
+            }
+            res += "<tr><td colspan=\"2\">申请说明：</td></tr>";
+            res += "</tr><td colspan=\"2\"><textarea id=\"area\" name=\"apply\" rows=\"4\" cols=\"80\"></textarea></td></tr>";
+            res += "<tr><td colspan=\"2\">" + specinfo + "</td></tr>";
+            res += "<tr><td align=\"center\" colspan=\"2\"><input type=\"button\" onclick=\"sendApply()\" class=\"btnbase\" value=\"提交\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            res += "</td></tr>";
+            res += "</table>";
+            document.getElementById("content").innerHTML = res;
+
+        }
+
+        function sendApply() {
+            var elem = document.getElementsByName("apply");
+            var obj = {};
+            var heads = ["user_id", "equ_name", "pur_purchasenumber", "pur_price", "pur_applyreason"];
+            for (var i = 0; i < elem.length; i++) {
+                if (elem[i].value == "") {
+                    messagePop("输入不能为空");
+                    elem[i].focus();
+                    return;
+                }
+                obj[heads[i]] = elem[i].value;
+                if (i == 2) {
+                    if (elem[i].value < 1 || elem[i].value > 1000) {
+                        messagePop("数量只能在1-1000之间");
+                        elem[i].focus();
+                        return;
+                    }
+                }
+                if (i == 3) {
+                    if (elem[i].value < 1 || elem[i].value > 600000) {
+                        messagePop("价值只能在1-600000元之间");
+                        elem[i].focus();
+                        return;
+                    }
+                }
+                if (i == 4) {
+                    if (elem[i].value.length < 50) {
+                        messagePop("申请理由至少50字以上");
+                        elem[i].focus();
+                        return;
+                    }
+                }
+
+            }
+            $.ajax({
+                url: BASE_URL + "/buyequ.do",
+                data: obj,
+                type: "GET",
+                dataType: "json",
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success: function (data) {
+                    if (data == 1) {
+                        messagePop("发送成功");
+                        buyApplyPrint();
+                    } else {
+                        messagePop("发送失败");
+                    }
+                }
+            });
+
+            // obj.pur_applydate=,adm_dealstatus)
+        }
+
+        window.onload = function () {
+            buyApplyPrint();
+        }
+    </script>
+</head>
+<body>
+<div id="maindiv">
+    <div style="background-color: #366AB3; font:bold;padding:8px 8px;width:100%;color:white;">购买申请</div>
+    <div id="content">
+    </div>
+</div>
+
+</div>
+<!-- pur_id int auto_increment,
+pur_userid varchar(20),
+adm_jobid varchar(20),
+equ_name varchar(20),
+pur_applyreason varchar(100),
+pur_purchasenumber int,
+pur_price float,
+pur_applydate date,
+adm_message char(10),
+adm_dealresult char(10),
+adm_answer varchar(100), -->
+</body>
+</html>

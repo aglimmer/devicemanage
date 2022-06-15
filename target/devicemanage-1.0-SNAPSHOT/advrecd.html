@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<script src="js/base.js"></script>
+		<script src="js/jquery-3.5.0.min.js"></script>
+		<style>
+			body {
+				margin: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #EFFAFF;
+			}
+
+			input[type="text"] {
+				width: 150px;
+				display: block;
+				margin-bottom: 10px;
+				background-color: whitesmoke;
+				font-family: Verdana, Arial;
+			}
+
+			#maindiv {
+				width: 96%;
+				height: 540px;
+				/* margin:0 auto; */
+				padding: 18px 18px;
+				background-color: #F2F2F2;
+			}
+
+			#content {
+				background-color: #F2F2F2;
+				margin-top: 10px;
+			}
+			#content table{
+				width:100%;
+				/* height:100%; */
+			}
+			#dealview {
+				/* display: none; */
+				width:420px;
+				height:280px;
+				position: absolute;
+				left:50%;
+				top:50%;
+				margin-left:-210px;
+				margin-top:-140px;
+				background-color:#BBDDF6;
+				/* #FFEFDF; */
+				/* border:1px solid #BBDDF6; */
+				padding:16px;
+			}
+			input[type="number"] {
+				width: 60px;
+			}
+			#tabview{
+				width: 560px;
+				heigth: 480px;
+			}
+			
+		</style>
+		<script>
+			var session = window.sessionStorage;
+			var BASE_URL = session.getItem("BASE_URL");
+			function sendFeedBack() {
+				obj = {
+					pos: 0,
+					size: 10
+				};
+				$.ajax({
+					url: BASE_URL+"/advice.do",
+					data: obj,
+					type: "Get",
+					dataType: "json",
+					xhrFields: {
+						withCredentials: true
+					},
+					crossDomain: true,
+					success: function(data) {
+						getAdvice(data);
+					},
+					error: function(e) {
+						messagePop("请求异常！");
+						// alert(JSON.stringify(e));
+					}
+				});
+
+			}
+			// 意见信息
+			function getAdvice(obj) {
+				var heads = ["fee_id", "user_id", "fee_question", "fee_detail", "adm_message", "adm_answer"];
+				var info = ["编号", "用户", "问题", "意见建议", "处理情况", "回复消息","操作"];
+				if (obj == null) {
+					return;
+				}
+				var res = "<table class=\"contab\">";
+				res += "<tr>";
+				for (var i = 0; i < info.length; i++) {
+					res += "<th>" + info[i] + "</th>";
+				}
+				res += "</tr>";
+				var param = "";
+				for (var i = 0; i < obj.length; i++) {
+					var item = obj[i];
+					param = JSON.stringify(item).replace(/"/g, '&quot;');
+					res += "<tr>";
+					for (var k = 0; k < heads.length; k++) {
+						res += "<td>" + item[heads[k]] + "</td>";
+					}
+					res += "<td align=\"center\"><pre>";
+					// 用户：删除功能
+					res += "<input type=\"button\" class=\"btnbase\" value=\"删除\" onclick=\"delAdvice(\'" + item.fee_id + "\')\" >";
+					// 管理员：添加处理功能
+					if (session.getItem("usertype") == 2) {
+						res += "&thinsp;<input type=\"button\" class=\"btnbase\" value=\"处理\" onclick=\"dealAdvice(\'" + param + "\')\" >";
+					}
+					res += "<pre></td>";
+					res += "</tr>";
+				}
+				res += "</table>";
+				document.getElementById("content").innerHTML = res;
+				// "fau_img from tb_faultrecord where adm_id="G0001" limit 0,10;
+			}
+			// 处理点击触发
+			function dealAdvice(param){
+				var info = document.getElementsByName("fee");
+				info[0].value = JSON.parse(param).fee_id;
+				document.getElementById("dealview").style.display="block";
+			}
+			function delAdvice(fee_id){
+				if(!confirm()){
+					return;
+				}
+				var obj = {};
+				obj.fee_id = fee_id;
+				$.ajax({
+					url: BASE_URL+"/deladvice.do",
+					data: obj,
+					type: "Get",
+					dataType: "json",
+					xhrFields: {
+						withCredentials: true
+					},
+					crossDomain: true,
+					success: function(data) {
+						messagePop("删除成功");
+						// 再次获取
+						sendFeedBack();
+					},
+					error: function(e) {
+						messagePop("请求异常！");
+						// alert(JSON.stringify(e));
+					}
+				});
+				
+			}
+			//保存处理信息 
+			function saveAdvice(){
+				var obj = {};
+				var info = document.getElementsByName("fee");
+				obj.fee_id = info[0].value;
+				obj.adm_answer = info[1].value;
+				$.ajax({
+					url: BASE_URL+"/dealadvice.do",
+					data: obj,
+					type: "Get",
+					dataType: "json",
+					xhrFields: {
+						withCredentials: true
+					},
+					crossDomain: true,
+					success: function(data) {
+						messagePop("保存成功");
+						document.getElementById("dealview").style.display="none";
+					},
+					error: function(e) {
+						messagePop("请求异常！");
+						// alert(JSON.stringify(e));
+					}
+				});
+			}
+		
+			window.onload = function(){
+				sendFeedBack();
+			}
+		</script>
+	</head>
+	<body>
+		<div id="maindiv">
+			<p style="background-color: #366AB3; font:bold;padding:8px 8px;width:100%;color:white;">意见详情</p>
+			<div id="content">
+			</div>
+			<div id="dealview" style="display: none;">
+				<input type="button" class="btnbase" onclick="javascript:document.getElementById('dealview').style.display='none';" style="width:18px;height:18px;color:red;float:right;" value="x">
+				<div id="tabview">
+				<table>
+					<tr>
+						<td>编号：</td>
+						<td><input type="text" name="fee" disabled=""></td>
+					</tr>
+					<tr>
+						<td colspan="2">回复用户意见建议：</td>
+					<tr>
+					<tr>
+						<td colspan="2"><textarea name="fee" cols="58" rows="8"></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><input type="button" class="btnbase" onclick="saveAdvice()" value="保存"></td>
+					</tr>
+				</table>
+				</div>
+			</div>
+		</div>
+		</div>
+	</body>
+</html>

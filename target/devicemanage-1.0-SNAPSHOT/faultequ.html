@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<script src="js/base.js"></script>
+		<script src="js/jquery-3.5.0.min.js"></script>
+		<style>
+			body {
+				width: 100%;
+				height: 100%;
+				background-color: #fffcf0;
+				margin: 0;
+			}
+			
+			#main{
+				width:98%;
+				height:560px;
+				margin:0 10px;
+				padding: 14px 14px;
+				background-color: #D0E9E6;
+			}
+			
+			#content table tr:nth-of-type(odd){
+				background-color: #BBDDF6;
+			}
+			#content table tr:nth-of-type(even){
+				background-color:  #93BFE6;
+			}
+			#content table td,th{
+				border-width: 1px;
+				padding: 5px;
+				border-style: solid;
+				border-color: #a9c6c9;
+			}
+			#content table{
+				width:100%;
+				height:100%;
+				border-color: #a9c6c9;
+				border-collapse: collapse;
+			}
+			#imgdiv {
+				display: none;
+				width:640px;
+				height:480px;
+				position: absolute;
+				left:50%;
+				top:50%;
+				margin-left:-320px;
+				margin-top:-240px;
+				background-color:white;
+				border:1px solid #BBDDF6;
+				padding:8px;
+			}
+			#imgdiv img{
+				width:640px;
+				height:450px;
+				margin:0 auto;
+				overflow:hidden;
+			}
+			
+			#faultdiv{
+				width:640px;
+				height:480px;
+				display: none;
+				position: absolute;
+				left:50%;
+				top:50%;
+				margin-left:-320px;
+				margin-top:-240px;
+				
+				background-color: #93BFE6;
+				padding:24px 28px;
+				/* padding: 8px 8px; */
+				color:white;
+			}
+			/* 内容 */
+			#faultdeal{
+				
+				/* margin-top:24px;
+				margin-left:24px; */
+				font-weight: bold;
+				width:100%;
+				height:100%;
+			}
+			/* 内容-表格 */
+			#faultdiv table{
+				width:100%;
+				height:100%;
+			}
+			/* #faultdiv table tr{
+				height:36px;
+			} */
+			
+		</style>
+		<script>
+			var session = window.sessionStorage;
+			var BASE_URL = session.getItem("BASE_URL");
+			// 处理弹窗关闭
+			function closeFault(){
+				document.getElementById("faultdiv").style.display="none";
+			}
+			// 回复消息保存
+			function saveDeal(){
+				var pp = document.getElementsByName("dealfau");
+				// 保存信息检查
+				for(var i=0;i<pp.length;i++){
+					if(pp[i].value==""){
+						pp[i].focus();
+						return;
+					}
+				}
+				
+				// 发送请求
+				var info = {fau_id:pp[0].value,adm_message:pp[1].value,adm_answer:pp[2].value};
+				$.ajax({
+					url: BASE_URL+"/savefaul.do",
+					data: info,
+					type: "get",
+					dataType: "json",
+					xhrFields: {withCredentials: true},
+					crossDomain: true,
+					success: function(data) {
+						var res = "保存成功";
+						if(data!=1){
+							res = "处理失败"
+						}
+						messagePop(res);
+						closeFault();
+					},
+					error: function(e) {
+						postMessage("请求异常！")
+						// alert(JSON.stringify(e));
+					}
+				});
+			}
+			// 回复用户
+			function dealEqu(param){
+				// 关闭按钮
+				if(param==0){
+					closeFault();
+					return;
+				}
+				// 点击处理按钮
+				document.getElementById("faultdiv").style.display="block";
+				var obj = JSON.parse(param.replace(/\\/g,'\\\\'));
+				var pp = document.getElementsByName("dealfau");
+				// 点击处理回复，填充信息
+				if(obj.fau_img!=""){
+					pp[0].value = obj.fau_id;
+					pp[0].disabled="true";
+					pp[1].value = obj.adm_message;
+					pp[2].value = obj.adm_answer;
+				}
+				// alert("yes");
+				var repair = document.getElementsByName("repair");
+				repair[0].value = obj.equ_id;
+				repair[0].disabled = "true";
+				var scrap = document.getElementsByName("scrap");
+				scrap[0].value = obj.adm_id;
+				scrap[0].disabled = "true";
+				scrap[1].value = obj.equ_id;
+				scrap[1].disabled="true";
+				
+				
+			}
+			// 获取设备问题信息
+			function getFaultInfo(obj){
+				if(obj==null || obj.length==0){
+					messagePop("没有查询到相关记录！");
+					return;
+				}
+				var heads = ["fau_id","equ_id","user_id","fau_occurdate","fau_occurposition","fau_detail","fau_img","adm_message","adm_answer"];
+				var info = ["序号","设备编号","用户名","时间","位置","问题描述","图片","处理进度","回复","操作"];
+				var res = "<table>";
+				res += "<tr>";
+				for(var i=0;i<info.length;i++){
+					res +="<th>"+info[i]+"</th>";
+				}
+				res += "</tr>";
+				var param = "";
+				for(var i=0;i<obj.length;i++){
+					var item = obj[i];
+					param = JSON.stringify(item).replace(/"/g,'&quot;');
+					res +="<tr>";
+					for(var k=0;k<heads.length;k++){
+						if(heads[k]=="fau_img"){
+							if(item[heads[k]]!="无图片"){
+								res +="<td><input type=\"button\" class=\"btnbase\" value=\"查看\" onclick=\"getImg(\'"+JSON.stringify(item[heads[k]]).replace(/"/g,'&quot;')+"\')\" ></td>";
+								continue;
+							}
+						}
+						res +="<td>"+item[heads[k]]+"</td>";
+					}
+					res +="<td><pre>";
+					// 用户：删除功能
+					res +="<input type=\"button\" class=\"btnbase\" value=\"删除\" onclick=\"delFau(\'"+item.fau_id+"\')\" >";
+					// 管理员：添加处理功能
+					if(session.getItem("usertype")==2){
+						res +="&thinsp;<input type=\"button\" class=\"btnbase\" value=\"处理\" onclick=\"dealEqu(\'"+param+"\')\" >";
+					}
+					res +="<pre></td>";
+					res +="</tr>";
+				}
+				res +="</table>";
+				res += "<div id=\"imgdiv\">";
+				res +="<input type=\"button\" class=\"btnbase\" value=\"x\" style=\"float:right;width:18px;height:18px;text-align:center;color:red;text-align:center;margin-bottom:6px;\"class=\"btnbase\" onclick=\"closeimg()\">";
+				res += "<div><img src=\"\" id=\"imgview\"/> </div>";
+				res +="</div>";
+				document.getElementById("content").innerHTML = res;
+				// "fau_img from tb_faultrecord where adm_id="G0001" limit 0,10;
+				
+			}
+			// 关闭图片
+			function closeimg(){
+				document.getElementById("imgdiv").style.display="none";
+			}
+			// 查看图片
+			function getImg(fau_img){
+				var obj = {};
+				// alert("hello");
+				
+				obj.fau_img = fau_img.replace(/\\/g,'\\\\');
+				obj.fau_img = JSON.parse(obj.fau_img);
+				// return;
+				// alert(obj.fau_img);
+				$.ajax({
+					url: BASE_URL+"/getimg.do",
+					data: obj,
+					type: "get",
+					dataType: "json",
+					xhrFields: {withCredentials: true},
+					crossDomain: true,
+					success: function(data) {
+						// alert(data);
+						document.getElementById("imgview").src= data;
+						document.getElementById("imgdiv").style.display = "block";
+						// alert(data);
+					},
+					error: function(e) {
+						messagePop("请求异常！")
+						// alert(JSON.stringify(e));
+					}
+				});
+			}
+			
+			// 删除记录
+			function delFau(fauid){
+				if(!confirm("确定要删除吗？")){
+					return;
+				}
+				var obj = {};
+				obj.fauid = fauid;
+				// alert(fauid);
+				obj.usertype=session.getItem("usertype");
+				$.ajax({
+					url: BASE_URL+"/delfau.do",
+					data: obj,
+					type: "Get",
+					dataType: "json",
+					xhrFields: {withCredentials: true},
+					crossDomain: true,
+					success: function(data) {
+						// alert(data);
+						
+						var res = "删除成功";
+						if(data!=1){
+							res = "删除失败"
+						}
+						messagePop(data);
+						// 从新更新
+						queryFaultInfo();
+					},
+					error: function(e) {
+						messagePop("请求异常！");
+						// alert(JSON.stringify(e));
+					}
+				});
+			}
+			// 查询记录
+			function queryFaultInfo(){
+				if(session.getItem("userid")==null){
+					// session.setItem("userid","G0001");
+					// session.setItem("usertype",2);
+					messagePop("请登录后再进行操作");
+					return;
+				}
+				
+				// session.setItem("userid","3182701101");
+				var obj = {};
+				obj.adm_id = session.getItem("userid");
+				obj.pos1 = 0;
+				obj.pos2 = 10;
+				$.ajax({
+					url: BASE_URL+"/faultinfo.do",
+					data: obj,
+					type: "Get",
+					dataType: "json",
+					xhrFields: {withCredentials: true},
+					crossDomain: true,
+					success: function(data) {
+						getFaultInfo(data);
+					},
+					error: function(e) {
+						messagePop("请求异常！")
+						// alert(JSON.stringify(e));
+					}
+				});
+			}
+			// 单选按钮切换
+			$(document).ready(function(){
+				$("input[type=radio][name=dealtype]").change(function(){
+					// 获取当前值
+					var ss = this.value;
+					var k = parseInt(ss);
+					for(var i=1;i<=3;i++){
+						if(k==i){
+							$("#alter"+i).css("display","block");
+						}else{
+							$("#alter"+i).css("display","none");
+							// document.getElementById("alter"+i).style.display="none";
+						}
+					}
+				});
+				
+			});
+			
+			// 日期字符串格式化
+			// function dateStringFormat(datestr) {
+			// 	var now = new Date(datestr);
+			// 	//格式化日，如果小于9，前面补0
+			// 	var day = ("0" + now.getDate()).slice(-2);
+			// 	//格式化月，如果小于9，前面补0
+			// 	var month = ("0" + (now.getMonth() + 1)).slice(-2);
+			// 	//拼装完整日期格式
+			// 	var today = now.getFullYear() + "-" + (month) + "-" + (day);
+			// 	return today;
+			// }
+			
+			 function getNowFormatDate() {
+			        var date = new Date();
+			        var seperator1 = "-";
+			        var year = date.getFullYear();
+			        var month = date.getMonth() + 1;
+			        var strDate = date.getDate();
+			        if (month >= 1 && month <= 9) {
+			            month = "0" + month;
+			        }
+			        if (strDate >= 0 && strDate <= 9) {
+			            strDate = "0" + strDate;
+			        }
+			        var currentdate = year + seperator1 + month + seperator1 + strDate;
+			        return currentdate;
+			    }
+				// 修理信息保存
+				function repairSave(){
+					var repair = document.getElementsByName("repair");
+					var heads = ["equ_id","rep_reason","rep_person","rep_cost","rep_date","rep_result"];
+					var obj = {};
+					for(var i=0;i<repair.length;i++){
+						if(repair[i].value==""){
+							repair[i].focus();
+							messagePop("输入不能为空");
+							// alert(repair[i].innerHTML);
+							return;
+						}
+						obj[heads[i]] = repair[i].value;
+					}
+					// alert(JSON.stringify(obj));
+					// obj.adm_id = session.getItem("userid");
+					obj.adm_id="G0001";
+					// alert("0000");
+					$.ajax({
+						url: BASE_URL+"/repair.do",
+						data: obj,
+						type: "Get",
+						dataType: "json",
+						xhrFields: {withCredentials: true},
+						crossDomain: true,
+						success: function(data) {
+							var res = "保存成功";
+							if(data!=1){
+								res = "处理失败"
+							}
+							messagePop(res);
+						},
+						error: function(e) {
+							messagePop("请求异常！");
+							// alert(JSON.stringify(e));
+						}
+					});
+				}
+				// 报废信息保存
+				function scrapSave(){
+					var scrap = document.getElementsByName("scrap");
+					var heads=["adm_id","equ_id","scr_reason","scr_date"];
+					var obj = {};
+					for(var i=0;i<scrap.length;i++){
+						if(scrap[i].value==""){
+							return;
+						}
+						obj[heads[i]] = scrap[i].value;
+					}
+					// alert(JSON.stringify(obj));
+					$.ajax({
+						url: BASE_URL+"/scrap.do",
+						data: obj,
+						type: "Get",
+						dataType: "json",
+						xhrFields: {withCredentials: true},
+						crossDomain: true,
+						success: function(data) {
+							var res = "保存成功";
+							if(data!=1){
+								res = "处理失败"
+							}
+							messagePop(res);
+						},
+						error: function(e) {
+							messagePop("请求异常！")
+							// alert(JSON.stringify(e));
+						}
+					});
+				}
+		window.onload = function(){
+			queryFaultInfo();
+		}
+		</script>
+	</head>
+	<body>
+		<!-- <input type="button" onclick="queryFaultInfo()" value="测试"> -->
+		<!-- 查询设备故障记录 -->
+		<div id="main">
+			<div style="height:28px;line-height: 28px;padding: 14px 14px; margin-top:2px;margin-bottom:10px;font-weight: bolder;color:white;background-color: #0193DE;">故障设备</div>
+			<div id="content">
+			</div>
+			<!--处理设备信息 -->
+			<div id="faultdiv">
+				<input type="button" class="btnbase" style="float:right;width:28px;text-align:center;height:20px" class="btnbase"
+				 onclick="closeFault(0)" value="x">
+
+				<div id="faultdeal">
+					<div style="height:28px;line-height: 28px;padding-left: 1px; margin-top:28px;margin-bottom:10px;font-weight: bolder;color:white;background-color: #0193DE;">处理详情</div>
+					<label>业务处理选项：</label>
+					<input type="radio" name="dealtype" value="1">回复用户
+					<input type="radio" name="dealtype" value="2" checked>修理填报
+					<input type="radio" name="dealtype" value="3">报废处理
+					<hr>
+					<!-- 回复用户 -->
+					<div id="alter1" style="display: none;margin-top:10px;">
+						<table>
+							<tr>
+								<td>编号：</td>
+								<td>
+									<input type="text" name="dealfau">
+								</td>
+							</tr>
+							<tr>
+								<td>处理结果：</td>
+								<td>
+									<!-- <input type="text" list="prog" name="dealfau"> -->
+
+									<!-- <datalist id="prog"> -->
+									<select name="dealfau">
+										<option value="待解决" selected="selected">待解决</option>
+										<option value="已处理">已处理</option>
+										<!-- </datalist> -->
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">回复消息</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<textarea cols="54" rows="5" name="dealfau"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2"><input type="button" class="btnbase" value="保存" onclick="saveDeal()"></td>
+							</tr>
+						</table>
+					</div>
+					<!-- 修理填报 -->
+					<div id="alter2" style="display: block;">
+						<table>
+							<!-- rep_id int auto_increment,
+						equ_id int not null,
+						adm_id varchar(20) not null,
+						rep_reason varchar(50) default '',
+						rep_person varchar(20) default '',
+						rep_cost float,
+						rep_date date,
+						rep_result char(10) default '', -->
+							<tr>
+								<td>设备编号</td>
+								<td><input type="text" name="repair"></td>
+							</tr>
+							<tr>
+								<td colspan="2">修理原因</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<textarea cols="80" rows="5" name="repair"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>修理人：</td>
+								<td><input type="text" name="repair"></td>
+							</tr>
+							<tr>
+								<td>费用：</td>
+								<td><input type="text" name="repair"></td>
+							</tr>
+							<tr>
+								<td>日期：</td>
+								<td><input type="date" name="repair"></td>
+							</tr>
+							<tr>
+								<td>修理结果：</td>
+								<td>
+									<select name="repair">
+										<option value="已解决">已解决</option>
+										<option value="未解决" selected="selected">未解决</option>
+										<option value="已报废" selected="selected">已报废</option>
+										<!-- </datalist> -->
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input type="button" class="btnbase" onclick="repairSave()" value="保存" />
+								</td>
+							</tr>
+						</table>
+					</div>
+					<!-- 报废处理 -->
+					<div id="alter3" style="display:none">
+						<table>
+							<tr>
+								<td>管理员：</td>
+								<td><input type="text" name="scrap"></td>
+							</tr>
+							<tr>
+								<td>设备编号：</td>
+								<td><input type="text" name="scrap"></td>
+							</tr>
+							<!-- <tr>
+							<td>报废数量：</td>
+							<td><input type="text" name="scrap" value="1"></td>
+						</tr> -->
+							<tr>
+								<td colspan="2">报废原因</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<textarea cols="80" rows="5" name="scrap"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>日期：</td>
+								<td><input type="date" name="scrap"></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<input type="button" class="btnbase" onclick="scrapSave()" value="保存" />
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="css/pagetool.css" />
+		<script src="js/base.js"></script>
+		<script src="js/jquery-3.5.0.min.js"></script>
+	<style>
+		#dialogview {
+			width:1000px;
+			/* width: 720px; */
+			height: 480px;
+			position: absolute;
+			/* display: none; */
+			color: #333333;
+			/* line-height:28px; */
+			z-index: 100;
+		/* 	left: 50%;
+			top: 50%; */
+		/* 	margin-left: -360px;
+			margin-top: -250px; */
+			margin-bottom: 20px;
+			padding: 0 1em;
+			/* text-align:center; */
+			background-color:#F2F2F2; 
+			/* #d4e8ff; */
+			font-size: 12px;
+		}
+		
+	/* 	#dialogview .dialogclose {
+			position: absolute;
+			display: inline-block;
+			right: 8px;
+			top: 8px;
+			margin-bottom: 2em;
+			outline: none;
+			text-align: center;
+			border-color: #3ECCFF;
+			background-color: whitesmoke;
+			opacity: 0.5;
+		
+		} */
+		
+		#dialogview .dialogcontent {
+			width: 90%;
+			height: 90%;
+			margin: 1em auto;
+			border: 1px solid #e4fdff;
+			padding: 12px 16px;
+		}
+		#dialogview table{
+		width:100%;
+		font-size: larger;
+		}
+		tr.row{
+			height: 36px;
+		}
+		
+	</style>
+	<script>
+		var BASE_URL =window.sessionStorage.getItem("BASE_URL");
+		function dialogSave(){
+			var arr = document.getElementsByName("info");
+			var obj = {};
+			var heads = ["equ_name","equ_type","equ_unit","equ_singleprice","equ_total","equ_curr","equ_purchasedate","equ_purchaser","equ_position","fac_name","fac_addr","fac_phone","equ_spec"];
+			obj["equ_spec"] = document.getElementById("equ_spec1").value;
+			for(var i=0;i<heads.length-1;i++){
+				obj[heads[i]] = arr[i].value;
+			}
+			// alert(JSON.stringify(obj));
+			for(var i=0;i<=7;i++){
+				if(obj[heads[i]]==""){
+					arr[i].focus();
+					messagePop("信息不能为空！");
+					return;
+				}
+			}
+			// document.getElementById("tip").innerHTML=JSON.stringify(obj);
+			$.ajax({
+				url: BASE_URL+"/addequ.do",
+				data: obj,
+				type: "POST",
+				dataType: "json",
+				xhrFields: {
+				    withCredentials: true
+				},
+				crossDomain: true,
+				success: function(data) {
+					// 分页查询
+					if(data==1){
+						messagePop("添加成功");
+					}else{
+						messagePop("添加失败");
+					}
+					
+				}
+			});
+		}
+		function testExempleOk(){
+					// var pp={};
+					var pp = {"sex":"男","age":"35"};
+					// pp.info=qq;
+					$.ajax({
+						url: BASE_URL+"/addequ.do",
+						data: pp,
+						type: "POST",
+						dataType: "json",
+						xhrFields: {
+						    withCredentials: true
+						},
+						crossDomain: true,
+						success: function(data) {
+							// 分页查询
+							if(data==1){
+								messagePop("添加成功");
+							}else{
+								messagePop("添加失败");
+							}
+							
+						}
+					});
+				}
+	</script>
+	</head>
+	<body>
+		<!-- 借用设备弹出区 -->
+		<div id="dialogview">
+			<!-- <input type="button" class="dialogclose" onclick="dialogClose()" value="X"> -->
+			<div class="dialogcontent">
+				<div style="font-size:large;color:white;background-color: #337AB7;padding: 8px;">添加设备信息</div>
+					<hr>
+				</tr>
+				<table>
+					<tr class="row">
+						<td>设备名：</td>
+						<td><input type="text" name="info"></td>
+						<td>类型：</td>
+						<td><input type="text" name="info"></td>
+					</tr>
+					<tr class="row">
+						<td>单位：</td>
+						<td><input type="text" name="info"></td>
+						<td>单价：</td>
+						<td><input type="text" name="info"></td>
+					</tr class="row">
+					<tr>
+						<td>总数量：</td>
+						<td><input type="text" name="info"></td>
+						<td>可借数量：</td>
+						<td><input type="text" name="info"></td>
+					</tr class="row">
+					<tr class="row">
+						<td>购买日期：</td>
+						<td><input type="date" name="info"></td>
+						<td>购买人员：</td>
+						<td><input type="text" name="info"></td>
+					</tr>
+					<tr class="row">
+						<td>存放库房：</td>
+						<td><input type="text" placeholder="选填" name="info"></td>
+						<td>厂家：</td>
+						<td><input type="text" placeholder="选填" name="info"></td>
+					</tr>
+					<tr class="row">
+						<td>地址：</td>
+						<td><input type="text" placeholder="选填" name="info"></td>
+						<td>联系电话：</td>
+						<td><input type="text" placeholder="选填" name="info"></td>
+					</tr class="row">
+					<tr class="row2">
+						<td colspan="4">设备详情：</td>
+					</tr>
+					<tr>
+						<td colspan="4"><textarea style="width:100%;height:3em" id="equ_spec1"></textarea></td>
+					</tr class="row">
+					<tr>
+						<td colspan="2" align="center"><input type="button" class="btnbase" value="保存" onclick="dialogSave()"></td>
+						<td colspan="2" align="center"><input type="button" class="btnbase" value="取消" onclick="dialogClose()"></td>
+					</tr>
+				</table>
+			</div>
+			<!-- <button type="button" onclick="testExempleOk()">测试</button>
+			<div id="tip"></div> -->
+	</body>
+</html>

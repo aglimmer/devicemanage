@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/jquery-3.5.0.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<style>
+			body {
+				width: 100%;
+				height: 100%;
+				background-color: #f4fcff;
+				margin: 0;
+			}
+
+			div.changecontent {
+				width: 1000px;
+				height: 480px;
+				margin: 0 auto;
+				padding: 15px 15px;
+				background-color: #EFFAFF;
+				/* #77C4EE; */
+				/* #F2F2F2; */
+				/* #C8E6E8; */
+				/* #ECEEEF; */
+				/* #DFE7E8; */
+				/* #F2F2F2 */
+				/* #edf4ff; */
+				/* border:1px solid #337AB7; */
+			}
+
+			input.closebtn {
+				float: right;
+				width: 28px;
+				height: 28px;
+				line-height: 28px;
+				text-align: center;
+				outline: none;
+				border: 0;
+				opacity: 0.5;
+				/* margin-top:-7px;
+				margin-right:8px; */
+			}
+
+			#typeinfo table {
+				width: 100%;
+				height: 100%;
+				text-align: center;
+				border: 1px solid gainsboro;
+			}
+		</style>
+		<script>
+			var BASE_URL = window.sessionStorage.getItem("BASE_URL");
+			var ContentInfo = {
+				recover: ""
+			}
+
+			function equclass() {
+				var obj = {};
+				obj.start = 0;
+				obj.end = 10;
+				$.ajax({
+					url: BASE_URL+"/querytype.do",
+					data: obj,
+					xhrFields: {
+						withCredentials: true
+					},
+					crossDomain: true,
+					type: "GET",
+					dataType: "json",
+					success: function(data) {
+						typeInfo(data);
+					}
+				});
+			}
+
+			function closeSpecType() {
+				document.getElementById("typeinfo").innerHTML = ContentInfo.recover;
+
+			}
+			// 点击触发查询所有同种类型的设备
+			function queryEquipType(param) {
+				// alert(param);
+				var obj = {};
+				obj.equ_type = param;
+				obj.start = 0;
+				obj.end = 10;
+				$.ajax({
+					url: BASE_URL +"/spectype.do",
+					data: obj,
+					type: "GET",
+					dataType: "json",
+					xhrFields:{
+						withCredentials:true
+					},
+					crossDomain:true,
+					success: function(data) {
+						equipTypeResult(data, param);
+					}
+				});
+			}
+			// 相同类型设备返回结果
+			function equipTypeResult(result, param) {
+				var ob = document.getElementsByClassName("changecontent")[0];
+				ContentInfo.recover = ob.innerHTML;
+				var res = "<div class=\"changecontent\">";
+				res += "<div id=\"typeinfo\">";
+				res += "<input type=\"button\" class=\"closebtn btnbase\" onclick=\"closeSpecType()\" value=\"X\">";
+				res += "<br><h3>设备类型：" + param + "</h3>";
+				res += "<h3>总数量：" + result.length + "</h3>";
+				res += "<hr>";
+				res += "<table>";
+				var headline = ["equ_id", "equ_name", "equ_unit", "equ_spec"];
+				var headinfo = ["编号", "名称", "单位", "具体信息"];
+				res += "<tr>";
+				for (var i = 0; i < headinfo.length; i++) {
+					res += "<th>" + headinfo[i] + "</th>";
+				}
+				res += "</tr>";
+				for (var i = 0; i < result.length; i++) {
+					var item = result[i];
+					res += "<tr>";
+					for (var j = 0; j < headline.length; j++) {
+						res += "<td>" + item[headline[j]] + "</td>";
+					}
+					res += "</tr>";
+				}
+
+				res += "</div>";
+				document.getElementById("changeview").innerHTML = res;
+
+			}
+
+			function typeInfo(arr) {
+				var div = document.getElementById("typeinfo");
+				var headline = ["序号", "类型名", "数量", "操作"];
+				// var arr=[];
+				// for(var k=0;k<10;k++){
+				// 	var obj = {};
+				// 	obj.serial = k+1;
+				// 	obj.equ_type = "类型"+obj.serial;
+				// 	obj.size = "数量"+obj.serial;
+				// 	arr.push(obj);
+				// }
+				var res = "";
+				res += "<table>"
+				res += "<tr>";
+				for (var i = 0; i < headline.length; i++) {
+					res += "<th>" + headline[i] + "</th>";
+				}
+				res += "</tr>";
+				for (var i = 0; i < arr.length; i++) {
+					// var param = JSON.stringify(arr[i]).replace(/"/g, '&quot;');
+					res += "<tr>";
+					res += "<td>" + (i + 1) + "</td>";
+					res += "<td>" + arr[i].equ_type + "</td>";
+					res += "<td>" + arr[i].equ_total + "</td>";
+					res += "<td><input type=\"button\" class=\"btnbase\" onclick=\"queryEquipType(\'" + arr[i].equ_type +
+						"\')\" value=\"查看\"></td>";
+					res += "</tr>";
+				}
+				div.innerHTML = res;
+				// 返回备份
+				ContentInfo.recover = res;
+			}
+			// 打开即加载
+			window.onload = function() {
+				equclass();
+			}
+		</script>
+	</head>
+
+	<body>
+		<div id="changeview">
+			<div class="changecontent">
+				<h3>设备分类</h3>
+				<hr><br>
+				<div id="typeinfo">
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

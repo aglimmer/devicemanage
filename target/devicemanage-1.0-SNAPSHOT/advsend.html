@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/base.css"/>
+		<script src="js/base.js"></script>
+		<script src="js/jquery-3.5.0.min.js"></script>
+		<style>
+			body {
+				margin: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #EFFAFF;
+			}
+
+			input[type="text"] {
+				width: 150px;
+				display: block;
+				margin-bottom: 10px;
+				background-color: whitesmoke;
+				font-family: Verdana, Arial;
+			}
+
+			#maindiv {
+				width:780px;
+				height:480px;
+				/* margin:0 auto; */
+				padding:18px 18px;
+				background-color: #F2F2F2;
+			}
+			#content{
+				/* width: 100%;
+				height:100%; */
+				background-color: #F2F2F2;
+				margin-top:10px;
+			} 
+
+			input[type="number"] {
+				width: 60px;
+			}
+
+			table {
+				width: 560px;
+				heigth: 480px;
+				border-collapse: collapse;
+				padding: 0;
+				/* border:1px solid #000000; */
+			}
+
+			table td {
+				border-width: 1px;
+				padding: 8px;
+				/* border-style: solid; */
+				border-color: #a9c6c9;
+			}
+		</style>
+		<script>
+			var BASE_URL = window.sessionStorage.getItem("BASE_URL");
+			function sendFeedBack(){
+				var session = window.sessionStorage;
+				var question = document.getElementById("fee_question");
+				var spec = document.getElementById("specinfo");
+				if(question.value==""){
+					question.focus();
+					messagePop("问题不能为空！")
+					return;
+				}
+				if(spec.value==""){
+					spec.focus();
+					messagePop("描述不能为空！");
+					return;
+				}
+				if(session.getItem("question")==question.value && session.getItem("spec")==spec.value){
+					messagePop("请勿重复发送");
+					return;
+				}
+				session.setItem("question",question.value);
+				session.setItem("spec",spec.value);
+				var obj = {};
+				// user_id,fee_question,fee_detail,adm_message,adm_answer
+				obj.user_id = session.getItem("userid");
+				if(obj.userid==null){
+					obj.user_id = "G0001";
+				}
+				obj.fee_question = question.value;
+				obj.fee_detail = spec.value;
+				obj.adm_message = "已发送";
+				obj.adm_answer = "暂无消息";
+				$.ajax({
+					url: BASE_URL+"/addadvice.do",
+					data: obj,
+					type: "Get",
+					dataType: "json",
+					xhrFields: {withCredentials: true},
+					crossDomain: true,
+					success: function(data) {
+						messagePop("信息发送成功！");
+					},
+					error: function(e) {
+						messagePop("请求异常！");
+						// alert(JSON.stringify(e));
+					}
+				});
+				
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div id="maindiv">
+			<p style="background-color: #366AB3; font:bold;padding:8px 8px;width:100%;color:white;">意见和建议</p>
+			<div id="content">
+				<table>
+					<tr><td>你遇到的问题？</td></tr>
+					<tr><td>
+					<input id="fee_question" list="info" />
+					<datalist id="info">
+					  <option value="借用设备问题">
+					  <option value="设备故障问题">
+					  <option value="管理系统问题">
+					  <option value="其他">
+					</datalist>
+					</td></tr>
+					<tr><td>关于这个问题的具体描述：</td></tr>
+					<tr><td><textarea style="width:100%;" rows="5" id="specinfo"></textarea></td></tr>
+					<tr><td><input type="button" class="btnbase" onclick="sendFeedBack()" value="发送"></td></tr>
+			</div>
+		</div>
+
+		</div>
+	</body>
+</html>

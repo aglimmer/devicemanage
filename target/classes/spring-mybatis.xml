@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 配置数据源 -->
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName">
+            <value>com.mysql.jdbc.Driver</value>
+        </property>
+        <property name="url">
+            <value>jdbc:mysql://localhost:3306/devicemanage?useUnicode=true&amp;characterEncoding=utf8
+            </value>
+        </property>
+        <property name="username">
+            <value>root</value>
+        </property>
+        <property name="password">
+            <value>666666</value>
+        </property>
+    </bean>
+
+    <!--扫描Service里面的注解，为service注入提供来源 -->
+    <context:component-scan
+            base-package="com.service"></context:component-scan>
+
+    <!-- SqlSessionFactory配置 -->
+    <bean id="sqlSessionFactory"
+          class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--如果使用注解方式，建议使用以下方法-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+
+        <!-- 加载mybatis的全局配置文件，不使用注解常用以下方式 -->
+
+        <!-- 加载单个配置文件：
+        <property name="mapperLocations" value="classpath:userMapper-del.xml" />
+        -->
+
+        <!-- 加载多个配置文件 ,使用通配符可能会加载相冲突的xml文件，最好使用list列出 -->
+        <!-- <property name="mapperLocations">
+            <list>
+                <value>classpath:userMapper-del.xml</value>
+            </list>
+        </property>
+        -->
+    </bean>
+
+    <!-- mapper扫描器，扫描dao -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 扫描包路径，如果需要扫描多个包，中间使用半角逗号隔开 -->
+        <property name="basePackage" value="com.dao"/>
+    </bean>
+
+    <!-- 事务管理器 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--开启事务注解-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

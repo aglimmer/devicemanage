@@ -49,7 +49,7 @@ spring功能是实现参数参数注入，请求分发处理，对数据库操�
 ## 使用说明
 1. 把项目导入idea2019，然后使用`devicemanage.sql`创建与该项目同名的数据库
 2. 修改`xml`中关于数据库mysql连接的信息，先测试连数据库能够正常
-3. 最简单的启动方式，可以选择使用命令`mvm tomcat7:run`启动tomcat便可访问，无需单独配置tomcat，因为使用的是`pom.xml`插件指定的的tomcat
+3. 最简单的启动方式，可以选择使用命令`mvn tomcat7:run`启动tomcat便可访问，无需单独配置tomcat，因为使用的是`pom.xml`插件指定的的tomcat
 4. 如果不使用上面mvn命令配置tomcat，那么这里可参考版本`tomcat9.0.22`，并tomcat配置页面配置访问路径：
 ```
 #该路径如果要定义为其他，需要修改login.html中指定的全局的BASE_URL与后端一致，并且需要检查后端图片请求的路径

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<script src="js/base.js"></script>
+		<script src="js/jquery-3.5.0.min.js"></script>
+		<style>
+		body {
+			width: 100%;
+			height: 100%;
+			background-color: #fffcf0;
+			margin: 0;
+		}
+		
+		#main{
+			width:96%;
+			height:560px;
+			margin:0 10px;
+			padding: 20px 20px;
+			background-color: #D0E9E6;
+		}
+		#navbar{
+			height: 48px;
+			width: 100%;
+			background-color: #28B0C8;
+		}
+		input.navlab {
+			width: 120px;
+			height: 48px;
+			margin-right: 1px;
+			background-color: #28B0C8;
+			text-align: center;
+			outline: none;
+			border: 0;
+			color: whitesmoke;
+		}
+		input.navlab:hover{
+			background-color: #90CDE0;
+		}
+		.tabview{
+			margin-top:14px;
+			padding:10px 14px;
+			width:100%;
+			height:85%;
+		}
+		.tabview tr{
+			height:32px;
+		}
+		</style>
+		<script>
+			var BASE_URL=window.sessionStorage.getItem("BASE_URL");
+			function repairRecord(){
+				var info = {};
+				info.pos = 0;
+				info.size = 10;
+				$.ajax({
+					url: BASE_URL+"/recordrepair.do",
+					data: info,
+					type: "get",
+					dataType: "json",
+					xhrFields: {withCredentials: true},
+					crossDomain: true,
+					success: function(data) {
+						repairBack(data);
+					},
+					error: function(e) {
+						messagePop("请求异常！");
+						// alert(JSON.stringify(e));
+					}
+				});
+			}
+			function repairBack(obj){
+				if(obj.length==0){
+					messagePop("暂无记录");
+					return;
+				}
+				var heads = ["rep_id","equ_id","adm_id","rep_reason","rep_cost","rep_date","rep_result"];
+				var infos = ["编号","设备编号","负责人","修理人员","费用","修理日期","修理结果"];
+				
+				var res = "<table class=\"contab tabview\">";
+				res +="<tr>";
+				for(var i=0;i<infos.length;i++){
+					res +="<th>"+infos[i]+"</th>";
+				}
+				res +="</tr>";
+				for(var i=0;i<obj.length;i++){
+					res +="<tr>";
+					var item = obj[i];
+					for(var j=0;j<heads.length;j++){
+						res +="<td>"+item[heads[j]]+"</td>";
+					}
+					res +="</tr>";
+				}
+				res +="</table>";
+				document.getElementById("content").innerHTML = res;
+				// alert("ok");
+				
+			}
+			//报废记录显示
+			function scrapBack(obj){
+				if(obj.length==0){
+					messagePop("暂无记录");
+					return;
+				}
+				// scr_id,adm_id,equ_id,scr_reason,scr_date
+				var heads = ["scr_id","adm_id","equ_id","scr_reason","scr_date"];
+				var infos = ["编号","管理员","设备编号","报废原因","日期"];
+				
+				var res = "<table class=\"contab tabview\">";
+				res +="<tr>";
+				for(var i=0;i<infos.length;i++){
+					res +="<th>"+infos[i]+"</th>";
+				}
+				res +="</tr>";
+				for(var i=0;i<obj.length;i++){
+					res +="<tr>";
+					var item = obj[i];
+					for(var j=0;j<heads.length;j++){
+						res +="<td>"+item[heads[j]]+"</td>";
+					}
+					res +="</tr>";
+				}
+				res +="</table>";
+				document.getElementById("content").innerHTML = res;
+				
+			}
+			// 报废记录
+			function scrapRecord(){
+				var info = {};
+				info.pos = 0;
+				info.size = 10;
+				$.ajax({
+					url: BASE_URL+"/recordscrap.do",
+					data: info,
+					type: "get",
+					dataType: "json",
+					xhrFields: {withCredentials: true},
+					crossDomain: true,
+					success: function(data) {
+						scrapBack(data);
+					},
+					error: function(e) {
+						messagePop("请求异常！");
+						// alert(JSON.stringify(e));
+					}
+				});
+			}
+			function repairInfo(param){
+				var btn = document.getElementsByClassName("navlab");
+				var urls = "";
+				for(var i=0;i<btn.length;i++){
+					if(i==param){
+						btn[i].style.background="#90CDE0";
+					}else{
+						btn[i].style.background="#28B0C8";
+					}
+				}
+				if(param==0){
+					repairRecord();
+				}else{
+					scrapRecord();
+				}
+				
+				
+			}
+			// /recordscrap.do
+			window.onload=function(){
+				// var btn = document.getElementsByClassName("navlab");
+				// btn[0].style.background="#90CDE0";
+				repairInfo(0);
+			}
+		</script>
+	</head>
+	<body>
+		<div id="main">
+			<div id="navbar">
+				<input type="button" class="navlab" onclick="repairInfo(0)" value="修理记录">
+				<input type="button" class="navlab" onclick="repairInfo(1)" value="报废记录">
+			</div>
+			<div id="content">
+			</div>
+	</body>
+</html>

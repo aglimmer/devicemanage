@@ -1,0 +1,66 @@
+/*input按钮基本样式  */
+input.btnbase {
+	font-weight: normal;
+	text-align: center;
+	outline: none;
+	padding: 2px;
+	border-radius: 2px;
+	border: 0.2px solid #2299ff;
+}
+
+input.btnbase:hover {
+	cursor: pointer;
+	background-color: #3eccff;
+	border-color: #cfcfcf;
+}
+
+input.btnbase:active {
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+	background-color: #3399FF;
+
+}
+
+/* 消息提示框弹出 */
+#messageid {
+	width: 170px;
+	height: 28px;
+	/* width:200px;
+ 							height:28px; */
+	position: absolute;
+	display: none;
+	color: white;
+	vertical-align: auto;
+	line-height: 28px;
+	z-index: 100;
+	left: 50%;
+	top: 50%;
+	margin-left: -75px;
+	margin-top: -14px;
+	text-align: center;
+	background-color: #3399FF;
+	font-size: 12px;
+}
+
+	/* 奇偶选择器 */
+		table.contab tr:nth-of-type(odd){background-color: #c3dde0;} 
+		table.contab tr:nth-of-type(even){background-color: #d4e3e5;}
+		table.contab {
+			font-family: verdana,arial,sans-serif;
+			font-size:11px;
+			color:#333333;
+			border-width: 1px;
+			border-color: #a9c6c9;
+			border-collapse: collapse;
+		}
+		table.contab th {
+			border-width: 1px;
+			padding: 5px;
+			border-style: solid;
+			border-color: #a9c6c9;
+		}
+		table.contab td {
+			border-width: 1px;
+			padding: 4px;
+			border-style: solid;
+			border-color: #a9c6c9;
+		}

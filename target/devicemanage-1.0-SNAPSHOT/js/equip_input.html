@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<script>
+		function saveinfo(){
+			// var div = document.getElementById("modifydiv");
+			// var contab = div.getElementsByClassName("contab");
+			var info = document.getElementsByName("equ_name");
+			if(confirm("确定要保存吗？")){
+				alert("yes");
+			}
+			info[0].value = 200;
+			alert(info[3].value);
+			// alert(info[0].value());
+		}
+	</script>
+	<body>
+		<div id="modifydiv">
+		<table class="contab">
+			<tr>
+				<td>设备编号：</td>
+				<td><input type="text" name="equ_name" disabled=""></td>
+				<td>名称：</td>
+				<td><input type="text" name="equ_name"></td>
+			</tr>
+			<tr>
+				<td>类型：</td>
+				<td><input type="text" name="equ_name"></td>
+				<td>购买日期：</td>
+				<td><input type="text" name="equ_name"></td>
+			</tr>
+			<tr>
+				<td>购买人员：</td>
+				<td><input type="text" name="equ_name"></td>
+				<td>单价：</td>
+				<td><input type="text" name="equ_name"></td>
+			</tr>
+			<tr>
+				<td>单位：</td>
+				<td><input type="text" name="equ_name"></td>
+				<td>详情：</td>
+				<td><input type="text" name="equ_name"></td>
+			</tr>
+			<tr>
+				<td>总数量：</td>
+				<td><input type="text" name="equ_name"></td>
+				<td>当前数量：</td>
+				<td><input type="text" name="equ_name"></td>
+			</tr>
+			<tr>
+				<td>放置位置：</td>
+				<td><input type="text" name="equ_name"></td>
+				<td>当前数量：</td>
+				<td><input type="text" name="equ_name"></td>
+			</tr>
+			<td  colspan="4"><button type="button" onclick="saveinfo()">保存</button></td>
+		</table>
+		</div>
+	</body>
+</html>

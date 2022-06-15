@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" monitorInterval="60">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT"> <!-- 定义类型为Console的Appender -->
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} [%level] %c{1} - %msg%n" /> <!-- 定义类型为Pattern的Layout -->
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Root level="info"> <!-- 定义Root Logger，其日志级别为error -->
+			<AppenderRef ref="Console" /> <!-- Root Logger的Appender引用上面定义的Console -->
+		</Root>
+	</Loggers>
+</Configuration>

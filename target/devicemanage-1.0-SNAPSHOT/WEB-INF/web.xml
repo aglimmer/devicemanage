@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0" metadata-complete="false">
+    <display-name>Archetype Created Web Application</display-name>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.htm</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>default.html</welcome-file>
+        <welcome-file>default.htm</welcome-file>
+        <welcome-file>default.jsp</welcome-file>
+    </welcome-file-list>
+    <!-- 跨域请求 xml配置 -->
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>com.util.CorsFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--  静态文件安全过滤-->
+    <filter>
+        <filter-name>SafeFilter</filter-name>
+        <filter-class>com.util.SafeFilter</filter-class>
+        <init-param>
+            <!--在没有登录的条件下用户能够访问那些html文件-->
+            <param-name>ignore</param-name>
+            <param-value>/login.html,/welcome.html,/index.html,/admin_top.html,/left.html,/404.html</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>SafeFilter</filter-name>
+        <!--  过滤器映射中的<url-pattern> [/*.do],这样会报错-->
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!--此处如果不指定context-param及param-value，则在servlet的param-value中只能使用/WEB-INF/applicationContext.xml-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-mybatis.xml</param-value>
+    </context-param>
+
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <!-- 请求触发器 -->
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <!--param-value可缺省-->
+            <param-value>classpath:spring-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup><!-- 提前启动 -->
+    </servlet>
+
+    <!--  dispatcher对多种请求进行匹配-->
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>*.ano</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- 解决springMVC的post乱码 -->
+    <filter>
+        <filter-name>springUtf8Encoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>springUtf8Encoding</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
+</web-app>

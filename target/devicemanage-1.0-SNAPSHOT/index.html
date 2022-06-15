@@ -1,0 +1,50 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>管理中心</title>
+    <style>
+        iframe.normal{
+            border:0;
+            height: 100%;
+            width:100%;
+        }
+    </style>
+    <script>
+        window.onload=function () {
+            const session = window.sessionStorage;
+            const userid = session.getItem("userid");
+            const userpw = session.getItem("userpw");
+            const iframe = document.getElementById("content");
+            if(userid==null||userpw==null){
+               iframe.src = "404.html";
+            }else{
+                iframe.src = "welcome.html";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <div style="height: 64px;width: 100%;">
+            <iframe src="admin_top.html"   noresize="noresize" marginwidth="0" marginheight="0" id="topFrame" scrolling="no" class="normal"></iframe>
+        </div>
+        <div style="width: 100%;">
+            <div style="width:200px;height:100%;float:left;">
+                <iframe src="left.html"  noresize="noresize" marginwidth="0" marginheight="0"  id="leftFrame" scrolling="no" class="normal"></iframe>
+            </div>
+            <div style="width:calc(100% - 200px);height:100%;float:left;border:0">
+                <iframe src="" id="content"   noresize="noresize" marginwidth="0" marginheight="0"  name="main" class="normal"></iframe>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- 过时的写法 -->
+
+
+</html>

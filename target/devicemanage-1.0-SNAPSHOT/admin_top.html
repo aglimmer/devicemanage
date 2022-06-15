@@ -1,0 +1,53 @@
+<html>
+<head>
+	<meta charset="utf-8"/>
+<title>管理页面</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="refresh" content="60">
+<script>
+  function logout(){
+    if (confirm("您确定要退出控制面板吗？")){
+      top.location = "logout.ano";
+    }
+  }
+function showsubmenu(sid) {
+	var whichEl = eval("submenu" + sid);
+	var menuTitle = eval("menuTitle" + sid);
+	if (whichEl.style.display == "none"){
+		eval("submenu" + sid + ".style.display=\"\";");
+	}else{
+		eval("submenu" + sid + ".style.display=\"none\";");
+	}
+}
+window.onload = function(){
+	var p = document.getElementsByClassName("admin_txt")[0];
+	var session = window.sessionStorage;
+	var userid = session.getItem("userid");
+	if(userid==null){
+		p.innerHTML= "用户：未登陆！";
+	}else{
+		p.innerHTML="用户：<b>"+userid+"</b> 您好,感谢登陆使用！";
+	}
+}
+</script>
+<base target="main">
+<link href="css/skin.css" rel="stylesheet" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<table width="100%" height="64" style="border:0" cellpadding="0" cellspacing="0" class="admin_topbg">
+  <tr>
+    <td width="61%" height="64"><img src="css/skin/logo.gif" width="262" height="64"></td>
+    <td width="39%" valign="top"><table width="100%" style="border:0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="74%" height="38" class="admin_txt"></td>
+        <td width="22%"><a href="#" target="_self" onClick="logout();"><img src="css/skin/out.gif" alt="安全退出" style="width:46px;height:20px;border:0;"></a></td>
+        <td width="4%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td height="19" colspan="3">&nbsp;</td>
+        </tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>

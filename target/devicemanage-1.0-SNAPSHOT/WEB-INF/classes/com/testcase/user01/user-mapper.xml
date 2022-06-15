@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <settings>
+    <setting name="cacheEnabled" value="false"/>
+    <!--开启延迟加载-->
+    <setting name="lazyLoadingEnabled" value="false"/>
+    <setting name="aggressiveLazyLoading" value="false"/>
+    <setting name="useGeneratedKeys" value="true"/>
+    <setting name="autoMappingBehavior" value="FULL"/>
+    <setting name="defaultExecutorType" value="REUSE"/>
+    <setting name="defaultStatementTimeout" value="20000"/>
+    <!--自动驼峰命名映射字段名-->
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+  </settings>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <!-- 配置数据库连接信息 -->
+      <dataSource type="POOLED">
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/devicemanage?useUnicode=true&amp;characterEncoding=utf8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="666666"/>
+      </dataSource>
+    </environment>
+  </environments>
+  
+  <mappers>
+      <!-- 注册UserMapper映射接口-->
+     <!--  <mapper resource="com/wz/UserInterface2.xml"/> -->
+     <!--  由于使用的是注解，所以可以替换使用 <mapper resource="com/wz/UserMapper.xml"/> -->
+     <mapper class="com.testcase.user01.UserMapper"/>
+  </mappers>
+</configuration>

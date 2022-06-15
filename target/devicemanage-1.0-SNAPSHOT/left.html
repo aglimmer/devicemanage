@@ -1,0 +1,232 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache" content="no-cache">
+	<title>管理首页</title>
+	<style>
+		body {
+			font: 12px;
+			font-family: Helvetica, sans-serif;
+			background-color: #EEF2FB;
+			margin: 0px;
+		}
+
+		#container {
+			width: 182px;
+		}
+
+		.type {
+			font-size: 12px;
+			margin: 0px;
+			width: 182px;
+			cursor: pointer;
+			height: 30px;
+			line-height: 20px;
+		}
+
+		.type a:hover {
+			color: #0066CC;
+		}
+
+		.type a {
+			display: block;
+			width: 182px;
+			color: #000;
+			height: 30px;
+			text-decoration: none;
+			moz-outline-style: none;
+			background-image: url(css/left/menu_bgs.gif);
+			background-repeat: no-repeat;
+			line-height: 30px;
+			text-align: center;
+			margin: 0px;
+			padding: 0px;
+		}
+
+		.content {
+			width: 182px;
+			display: none;
+		}
+
+		.menu li {
+			list-style-type: none;
+			margin: 0px;
+			padding: 0px;
+			font-family: Arial, Helvetica, sans-serif;
+			height: 26px;
+			width: 182px;
+			font-size: 12px;
+			line-height: 26px;
+			color: #333333;
+			list-style-type: none;
+			text-decoration: none;
+			padding-left: 0px;
+		}
+
+		.menu {
+			width: 182px;
+			margin: 0px;
+			padding: 0px;
+			left: 0px;
+			top: 0px;
+			right: 0px;
+			bottom: 0px;
+			clip: rect(0px, 0px, 0px, 0px);
+		}
+
+		.menu a:link {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 12px;
+			line-height: 26px;
+			color: #333333;
+			background-image: url(css/left/menu_bg1.gif);
+			background-repeat: no-repeat;
+			height: 26px;
+			width: 182px;
+			display: block;
+			text-align: center;
+			margin: 0px;
+			padding: 0px;
+			overflow: hidden;
+			text-decoration: none;
+		}
+
+		.menu a:visited {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 12px;
+			line-height: 26px;
+			color: #333333;
+			background-image: url(css/left/menu_bg1.gif);
+			background-repeat: no-repeat;
+			display: block;
+			text-align: center;
+			margin: 0px;
+			padding: 0px;
+			height: 26px;
+			width: 182px;
+			text-decoration: none;
+		}
+
+		.menu a:active {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 12px;
+			line-height: 26px;
+			color: #333333;
+			background-image: url(css/left/menu_bg1.gif);
+			background-repeat: no-repeat;
+			height: 26px;
+			width: 182px;
+			display: block;
+			text-align: center;
+			margin: 0px;
+			padding: 0px;
+			overflow: hidden;
+			text-decoration: none;
+		}
+
+		.menu a:hover {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 12px;
+			line-height: 26px;
+			font-weight: bold;
+			color: #006600;
+			background-image: url(css/left/menu_bg2.gif);
+			background-repeat: no-repeat;
+			text-align: center;
+			margin: 0px;
+			padding: 0px;
+			height: 26px;
+			width: 182px;
+			text-decoration: none;
+		}
+	</style>
+</head>
+
+<body>
+	<table width="100%" height="280" border="0" cellpadding="0" cellspacing="0" bgcolor="#EEF2FB">
+		<tr>
+			<td width="182px" valign="top">
+				<div id="container">
+					<h1 class="menu">
+						<a href="welcome.html" target="main">欢迎使用</a>
+					</h1>
+
+					<h1 class="type"><a href="javascript:void(0)">基本设备信息</a></h1>
+					<div class="content">
+						<ul class="menu">
+							<li><a href="equinfo.html" target="main">设备信息</a></li>
+							<li><a href="addequ.html" target="main">添加设备</a></li>
+							<li><a href="equclass.html" target="main">设备分类</a></li>
+						</ul>
+					</div>
+
+					<h1 class="type"><a href="javascript:void(0)">设备申请信息</a></h1>
+					<div class="content">
+						<ul class="menu">
+							<li><a href="usiequ.html" target="main">使用申请</a></li>
+							<li><a href="buyequ.html" target="main">购买申请</a></li>
+						</ul>
+					</div>
+
+					<h1 class="type"><a href="javascript:void(0)">故障报废详情</a></h1>
+					<div class="content">
+						<ul class="menu">
+							<li><a href="faultequ.html" target="main">故障设备</a></li>
+							<li><a href="faurecord.html" target="main">处理记录</a></li>
+						</ul>
+					</div>
+
+					<h1 class="type"><a href="javascript:void(0)">用户意见信息</a></h1>
+					<div class="content">
+						<ul class="menu">
+							<li><a href="advsend.html" target="main">意见反馈</a></li>
+							<li><a href="advrecd.html" target="main">回复通知 </a></li>
+						</ul>
+					</div>
+				</div>
+				<script type="text/javascript">
+					var types = document.getElementsByClassName("type");
+					var contents = document.getElementsByClassName("content");
+					let cnt = 0;
+					for (let i = 0; i < types.length; i++) {
+						types[i].addEventListener("mouseover", function () {
+							contents[cnt].style.display = "none";
+							types[i].style.color = "red";
+							contents[i].style.display = "block";
+							cnt = i;
+						});
+					}
+					const aList = document.querySelectorAll("a[target=main]");
+					const session = window.sessionStorage;
+
+
+					function initVisitEvent(){
+
+						if(session.getItem("userid")!==undefined && session.getItem("userpw")!==undefined){
+							return;
+						}
+						//会话中没有用户信息，则限制访问
+						aList.forEach(function (element) {
+						element.addEventListener("click", function (event) {
+							//阻止事件默认行为
+							//event.preventDefault();
+							element.href = "404.html";
+						})
+					});
+					}
+
+
+					window.onload=initVisitEvent;
+				</script>
+			</td>
+		</tr>
+	</table>
+</body>
+
+</html>
